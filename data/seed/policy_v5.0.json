@@ -1,0 +1,150 @@
+{
+  "policy_version": "v5.0",
+  "document_ref": "CORVO-PROC-POL-04",
+  "name": "Corvo Engineering Procurement Policy v5.0",
+  "effective_date": "2026-04-01",
+  "currency": "INR",
+  "parameters": {
+    "clubbing_window_days": 14,
+    "need_by_window_days": 7,
+    "po_history_lookback_days": 365,
+    "preferred_supplier_lookback_days": 548,
+    "po_consolidation_window_hours": 24,
+    "supplier_ranking_weights": {
+      "po_frequency": 0.25,
+      "recency": 0.25,
+      "contract_held": 0.20,
+      "on_time_delivery": 0.15,
+      "quality_rating": 0.15
+    },
+    "recency_buckets": [
+      {"max_days": 90, "score": 1.0},
+      {"max_days": 365, "score": 0.5},
+      {"otherwise": 0.0}
+    ]
+  },
+  "global_constraints": [
+    {
+      "constraint_id": "5.7",
+      "clause": "Clause 5.7",
+      "description": "Blocked or Inactive suppliers must never receive a PO or be suggested for a sourcing event.",
+      "condition": {
+        "field": "supplier.status",
+        "operator": "NOT_IN",
+        "value": ["Blocked", "Inactive"]
+      }
+    }
+  ],
+  "decision_rules": [
+    {
+      "rule_id": "5.1",
+      "priority": 1,
+      "clause": "Clause 5.1",
+      "description": "The item type is Capex -> CAPEX_SOURCING, suggest 5 suppliers",
+      "plant_scope": null,
+      "condition": {
+        "field": "item.item_type",
+        "operator": "EQUALS",
+        "value": "Capex"
+      },
+      "outcome": {
+        "decision": "SOURCING_REQUEST",
+        "route": "CAPEX_SOURCING",
+        "suggest_suppliers_count": 5,
+        "requires_capex_approval": true
+      }
+    },
+    {
+      "rule_id": "5.2",
+      "priority": 2,
+      "clause": "Clause 5.2",
+      "description": "A contract can be used (valid, Active supplier, ceiling room) -> CONTRACT_PO",
+      "plant_scope": null,
+      "condition": {
+        "field": "contract.can_be_used",
+        "operator": "EQUALS",
+        "value": true
+      },
+      "outcome": {
+        "decision": "PO",
+        "route": "CONTRACT_PO",
+        "supplier_source": "WINNING_CONTRACT",
+        "price_source": "CONTRACT_RATE"
+      }
+    },
+    {
+      "rule_id": "5.3",
+      "priority": 3,
+      "clause": "Clause 5.3",
+      "description": "Emergency, value <= 500000, bought from Active supplier in 365 days -> EMERGENCY_PO",
+      "plant_scope": null,
+      "condition": {
+        "AND": [
+          {"field": "requirement.urgency", "operator": "EQUALS", "value": "Emergency"},
+          {"field": "requirement.group_value_inr", "operator": "LESS_THAN_OR_EQUAL", "value": 500000},
+          {"field": "history.bought_from_active_in_365d", "operator": "EQUALS", "value": true}
+        ]
+      },
+      "outcome": {
+        "decision": "PO",
+        "route": "EMERGENCY_PO",
+        "supplier_source": "FIRST_PREFERRED",
+        "price_source": "SUPPLIER_REFERENCE_PRICE"
+      }
+    },
+    {
+      "rule_id": "5.4",
+      "priority": 4,
+      "clause": "Clause 5.4",
+      "description": "Value below 200000, bought from Active supplier in 365 days -> SPOT_PO",
+      "plant_scope": null,
+      "condition": {
+        "AND": [
+          {"field": "requirement.group_value_inr", "operator": "LESS_THAN", "value": 200000},
+          {"field": "history.bought_from_active_in_365d", "operator": "EQUALS", "value": true}
+        ]
+      },
+      "outcome": {
+        "decision": "PO",
+        "route": "SPOT_PO",
+        "supplier_source": "FIRST_PREFERRED",
+        "price_source": "SUPPLIER_REFERENCE_PRICE"
+      }
+    },
+    {
+      "rule_id": "5.5",
+      "priority": 5,
+      "clause": "Clause 5.5",
+      "description": "Value below 1000000 (including items never bought in 365d) -> RFQ, suggest 3 suppliers",
+      "plant_scope": null,
+      "condition": {
+        "field": "requirement.group_value_inr",
+        "operator": "LESS_THAN",
+        "value": 1000000
+      },
+      "outcome": {
+        "decision": "SOURCING_REQUEST",
+        "route": "RFQ",
+        "suggest_suppliers_count": 3
+      }
+    },
+    {
+      "rule_id": "5.6",
+      "priority": 6,
+      "clause": "Clause 5.6",
+      "description": "Value 1000000 or more -> RFP, suggest 5 suppliers",
+      "plant_scope": null,
+      "condition": {
+        "field": "requirement.group_value_inr",
+        "operator": "GREATER_THAN_OR_EQUAL",
+        "value": 1000000
+      },
+      "outcome": {
+        "decision": "SOURCING_REQUEST",
+        "route": "RFP",
+        "suggest_suppliers_count": 5
+      }
+    }
+  ]
+}
+
