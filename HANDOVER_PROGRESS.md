@@ -1,117 +1,102 @@
-# Handover Progress & Architecture State
+# HANDOVER & PROGRESS STATUS DOCUMENT
 **Project**: Cantill.ai Full-Stack Intern Task — Policy-Driven PR-to-PO Platform (Corvo Engineering)  
-**Timestamp**: 2026-11-16 14:34 IST  
-**Repo**: `https://github.com/Jayantaxnath/policy-driven-procurement-management-system.git`  
-**Status**: Core Decision Engine 100% Implemented & Verified (14/14 Worked Examples Passed)
+**Latest Update**: 2026-11-16 14:55 IST  
+**Git Remote**: `https://github.com/Jayantaxnath/policy-driven-procurement-management-system.git`  
+**Current Milestone**: Core Engine 100% Complete & Verified (14/14 Worked Examples Passing), Database & Seed Ready, Batch API Initialized, DECISIONS.md Written.
 
 ---
 
-## 1. What Has Been Completed & Verified
+## 1. Quick Summary for Incoming Agent
 
-### A. Environment & Runtimes
-- Python 3.11 with `fastapi`, `uvicorn`, `sqlalchemy`, `pydantic`, `pandas`, `numpy`, `pypdf`, `rapidfuzz`, `google-genai` installed and verified.
-- Git initialized and remote linked to user's GitHub repository.
+You are working on the **Cantill.ai Full-Stack Intern Task**.
+- **Deadline**: Thursday 19 Nov 10:00 AM IST (then 2-hr blind test 10:00 AM - 12:00 PM).
+- **Core Mission**: Build a web app where employees raise purchase requests by chatting or CSV upload, and the system decides (PO vs Sourcing Request) following Corvo Procurement Policy v5.0. Policy is stored as data — changes take effect dynamically without code changes.
+- **Current Completion**: **~62%**.
+- **Working Directory**: `c:\Users\HP\Desktop\policy-driven procurement management system`
 
-### B. Master Data Ingestion & PDF Contract Extraction (`backend/app/db/seed.py`)
-- Database initialized (SQLite / PostgreSQL dual compatible):
+---
+
+## 2. What Has Been Completed & Verified
+
+### A. Environment & Setup
+- Python 3.11 with `fastapi`, `uvicorn`, `sqlalchemy`, `pydantic`, `pandas`, `numpy`, `pypdf`, `rapidfuzz`, `google-genai` installed.
+- Git initialized, remote set to `https://github.com/Jayantaxnath/policy-driven-procurement-management-system.git`.
+- Local SQLite database `procurement.db` seeded and verified.
+
+### B. Database Schema (`backend/app/db/models.py`)
+- Full 15-table schema supporting PostgreSQL and SQLite:
+  - `plants`, `item_master`, `supplier_master`, `po_history`
+  - `contract_headers`, `contract_lines`, `contract_consumption_log`
+  - `policy_versions`, `policy_approvals`
+  - `pr_batches`, `pr_lines`, `batch_execution_runs`
+  - `requirements`, `requirement_lines`, `po_headers`, `po_lines`
+  - `buyer_actions`, `audit_log`
+
+### C. Master Data Ingestion & PDF Parser (`backend/app/db/seed.py`, `backend/app/engine/pdf_parser.py`)
+- Loaded from `Cantill_FullStack_Task_Kit`:
   - 2 Plants (`PUN1`, `CHK1`)
   - 73 Catalog Items (`ITM-1001` to `ITM-1073`)
   - 48 Suppliers (43 Active, 3 Blocked: `S004`, `S008`, `S011`, 2 Inactive: `S031`, `S034`)
   - 468 PO History Records
-  - 10 Contracts in register (`RC-2025-011` through `RC-2026-015`) + 26 line items
-  - **PDF Contract Parsing (`backend/app/engine/pdf_parser.py`)**:
-    - Automatically parses signed rate contract PDFs.
-    - Extracted and seeded `RC-2026-031` (S021 Pneumatic Point, cap ₹20L, 3 lines) and `RC-2026-033` (S035 Infoline Systems, cap ₹50L, 2 lines).
-  - Seeded canonical Policy `v5.0` as JSON into `policy_versions`.
+  - 10 Contracts in register + 26 lines
+  - **PDF Contract Parsing**: Automatically parsed `contracts/pdf/RC-2026-031.pdf` (Pneumatic Point S021, cap ₹20L) and `RC-2026-033.pdf` (Infoline Systems S035, cap ₹50L) with rates and lines into DB.
+  - Seeded canonical Policy `v5.0` JSON into `policy_versions`.
 
-### C. Core Engine Modules (`backend/app/engine/`)
-1. **`item_matcher.py`**:
-   - Normalizes text (expands abbreviations like `brg` -> `ball bearing`, `pneu` -> `pneumatic`, removes noise phrases).
-   - Direct item code lookup + Token sort/set fuzzy matching via RapidFuzz.
-   - Accurately classifies catalog items vs. genuine NEW items (`NEW_ITEM_SOURCING`).
-   - Verified via `backend/tests/test_item_matcher.py`.
+### D. Core Decision Engine Modules (`backend/app/engine/`)
+1. **`item_matcher.py`**: Token normalization, abbreviation expansion (`brg` -> `ball bearing`), RapidFuzz token-set matching, distinct handling for catalog items vs. uncataloged `NEW` items.
+2. **`clubber.py`**: Anti-splitting algorithm (14-day creation, ±7-day need-by, chronological sort, pre-filtering of `qty <= 0` and invalid plants).
+3. **`condition_evaluator.py`**: Generic recursive AST condition evaluator for nested `AND`, `OR`, `NOT`, and comparison operators (`EQUALS`, `LESS_THAN`, `IN`, `CONTAINS`).
+4. **`ceiling_ledger.py`**: Run-isolated contract ceiling ledger (prevents double-consumption across reruns). Checks Active supplier gate (disqualifying S004 on `RC-2026-005`).
+5. **`valuator.py`**: 3-step waterfall (winning contract rate -> lowest applicable rate if depleted -> 365-day PO history with `(po_date DESC, po_number DESC)` tie-breaking -> standard price).
+6. **`supplier_ranker.py`**: Multi-factor composite scoring matching Corvo's exact rankings for ITM-1048, ITM-1036, and ITM-1016. Sourcing suggestion backfill logic (Clause 6.4).
+7. **`po_consolidator.py`**: 24-hour sliding window PO consolidation (same supplier, plant, route).
+8. **`pipeline.py`**: End-to-end pipeline processing any batch DataFrame/CSV and producing standard Section 4 output.
 
-2. **`clubber.py`**:
-   - Anti-splitting logic (Clauses 2.1 - 2.3).
-   - Pre-filters invalid lines (`quantity <= 0` or unrecognized plants -> `NOT_PROCESSED`).
-   - Chronological sort (`created_at ASC, pr_no ASC, pr_line ASC`).
-   - Groups by `(item_code, plant)` within 14 calendar days creation window and ±7 days need-by window.
-   - Verified via `backend/tests/test_clubber.py`.
+### E. 100% Verification on Worked Examples (`backend/tests/test_worked_examples.py`)
+Run `python backend/tests/test_worked_examples.py` — **all 14 / 14 worked examples pass 100%**:
+- Ex 1: `CONTRACT_PO` (S001 @ ₹9,168.71) -> PASS
+- Ex 2: PDF contract `RC-2026-031` (S021 @ ₹2,439.01) -> PASS
+- Ex 3: Ceiling depleted -> `RFQ` at lowest contract rate ₹2,20,256 -> PASS
+- Ex 4: Lowest rate contract chosen (S007) -> PASS
+- Ex 5: Split PRs clubbed into `SPOT_PO` (S024 @ ₹166.41) -> PASS
+- Ex 6: Different plants kept as separate requirements -> PASS
+- Ex 7: Free-text matched to `ITM-1035` -> `SPOT_PO` (S023) -> PASS
+- Ex 8: Emergency PO allowed up to ₹5L -> `EMERGENCY_PO` (S014) -> PASS
+- Ex 9: Value between 2L and 10L -> `RFQ` (3 suggestions) -> PASS
+- Ex 10: Contract supplier blocked & no active history -> `RFQ` -> PASS
+- Ex 11: Value >= 10L -> `RFP` (4 unique category suggestions) -> PASS
+- Ex 12: Capex item -> `CAPEX_SOURCING` (5 suggestions) -> PASS
+- Ex 13: Uncataloged item -> `NEW_ITEM_SOURCING` (no suggestions) -> PASS
+- Ex 14: Consolidated PO across requirements -> PASS
 
-3. **`condition_evaluator.py`**:
-   - Generic AST evaluator for Policy-as-Data JSON rules.
-   - Evaluates nested `AND`, `OR`, `NOT`, and comparison operators (`EQUALS`, `LESS_THAN`, `IN`, `CONTAINS`, etc.).
-   - Zero hardcoded thresholds in Python code!
+### F. API Layer Initialized (`backend/app/main.py`, `backend/app/api/routes/batch.py`)
+- `GET /health`: Health check.
+- `POST /api/process-batch`: Accepts multipart CSV file, executes pipeline, stores batch & run in DB, returns JSON decisions and stats.
+- `GET /api/runs/{run_id}/export`: Exports decisions as CSV in the Section 4 format.
+- `GET /api/preferred-suppliers`: Exports top 3 preferred suppliers per item as CSV as of a target date.
 
-4. **`ceiling_ledger.py`**:
-   - Run-isolated contract tracking.
-   - Evaluates contract validity, Active supplier gate (disqualifying blocked supplier S004 on RC-2026-005), and remaining ceiling.
-   - Selects lowest rate qualifying contract (Clause 4.3).
-   - Dynamically consumes ceiling during the batch run without permanently corrupting base DB state.
-
-5. **`valuator.py`**:
-   - Valuation waterfall (Clause 3.1): Winning contract rate -> lowest applicable contract rate (if ceiling depleted) -> 365-day PO history price (sorted by `po_date DESC, po_number DESC`) -> standard price.
-   - Accurately computes requirement values.
-
-6. **`supplier_ranker.py`**:
-   - Implements Clauses 6.1 - 6.4:
-   - Composite scoring: $0.25 \times \text{POs} + 0.25 \times \text{Recency} + 0.20 \times \text{Contract} + 0.15 \times \text{OnTime} + 0.15 \times \text{Quality}$.
-   - Reference price calculation (Clause 6.3).
-   - Category backfill for sourcing suggestions (Clause 6.4).
-   - Verified via `backend/tests/test_supplier_ranker.py` — matches Worked Examples page 5 rankings for ITM-1048, ITM-1036, and ITM-1016.
-
-7. **`po_consolidator.py`**:
-   - Purchase order consolidation (Clauses 7.1 - 7.2).
-   - Combines PO-bound requirements with same supplier, same plant, same route raised within 24 hours of first requirement.
-   - Assigns shared `po_id` (`PO-0001`, `PO-0002`...).
-
-8. **`pipeline.py`**:
-   - Complete pipeline runner executing all stages on any input batch DataFrame or CSV.
-   - Generates output matching Section 4 of Task Brief.
+### G. Documentation Done
+- **`DECISIONS.md`**: Complete log of all 10 architectural and policy ambiguity decisions with full business justifications.
+- **`MASTER_PLAN.md`**: Full technical blueprint.
 
 ---
 
-## 2. Test Verification Benchmark: 14 / 14 Passed
+## 3. What the Next Agent Should Do (Prioritized)
 
-The test script `backend/tests/test_worked_examples.py` processes `Cantill_FullStack_Task_Kit/pr_batches/sample_pr_batch.csv` (186 lines) and validates all 14 worked examples from `Worked_Examples.pdf`:
-- **Ex 1 (`PR-26-00019/1`)**: `CONTRACT_PO`, S001 @ ₹9,168.71, value ₹1,37,531 -> **PASS**
-- **Ex 2 (`PR-26-00045/1`)**: `CONTRACT_PO`, S021 @ ₹2,439.01 (PDF-only RC-2026-031), value ₹26,829 -> **PASS**
-- **Ex 3 (`PR-26-00004/1` & `PR-26-00026/1`)**: Clubbed into 380 qty, ceiling depleted -> `RFQ` at lowest contract rate ₹2,20,256 -> **PASS**
-- **Ex 4 (`PR-26-00034/1`)**: Two contracts -> chosen lowest rate with room (S007 @ ₹7.06) -> **PASS**
-- **Ex 5 (`PR-26-00146`, `PR-26-00144`, `PR-26-00145`)**: Clubbed into 760 LTR -> `SPOT_PO` (S024 @ ₹166.41), value ₹1,26,472 -> **PASS**
-- **Ex 6 (`PR-26-00106` PUN1 vs `PR-26-00103` CHK1)**: Different plants kept as separate requirements -> **PASS**
-- **Ex 7 (`PR-26-00088/1`)**: Free-text matched to ITM-1035 -> `SPOT_PO` (S023 @ ₹391.82) -> **PASS**
-- **Ex 8 (`PR-26-00059/1`)**: Emergency gearbox oil seal -> `EMERGENCY_PO` (S014 @ ₹106.38), value ₹2,53,184 -> **PASS**
-- **Ex 9 (`PR-26-00089/1`)**: CMM calibration service -> `RFQ` with 3 suggested suppliers -> **PASS**
-- **Ex 10 (`PR-26-00050/1`)**: Contract supplier S004 blocked & no active history -> `RFQ` with 3 suggested suppliers -> **PASS**
-- **Ex 11 (`PR-26-00100/1`)**: CNC encoder value ₹20,70,780 (>= 10L) -> `RFP` with 4 category suppliers -> **PASS**
-- **Ex 12 (`PR-26-00047/1`)**: Capex item -> `CAPEX_SOURCING` with 5 suggested suppliers -> **PASS**
-- **Ex 13 (`PR-26-00170/1`)**: Water purifier (uncataloged) -> `NEW_ITEM_SOURCING`, value ₹1,41,100, no suggestions -> **PASS**
-- **Ex 14 (`PR-26-00034` & `PR-26-00031`)**: Requirements consolidated into shared PO `PO-0004` -> **PASS**
-
----
-
-## 3. What Needs to Be Built Next
-
-1. **FastAPI Endpoints (`backend/app/api/routes/`)**:
-   - `POST /api/process-batch`: Accepts multipart CSV file, runs `process_pr_batch`, returns decisions JSON + saves run in DB.
-   - `GET /api/runs/{run_id}/export`: Streams decision CSV formatted per Section 4.
-   - `GET /api/preferred-suppliers`: Query params `item_code` and `as_of_date`, returns CSV or JSON of top 3 suppliers.
-   - `POST /api/chat`: Takes user message, extracts parameters via Gemini Flash (`google-genai`), returns clarification questions or confirms draft PR.
-   - `POST /api/chat/confirm`: Saves confirmed PR and evaluates decision.
-   - `POST /api/policy/upload`: Takes policy amendment text or PDF, uses LLM to generate structured diff, saves draft policy.
-   - `POST /api/policy/{version_id}/approve`: Activates new policy version with effective date.
-   - `POST /api/requirements/{id}/approve` & `override`: Buyer actions with audit trail.
+1. **Wire Remaining API Routes (`backend/app/api/routes/`)**:
+   - `chat.py`: Natural language PR intake using Gemini Flash (`google-genai` SDK with key from `.env`) — extracts slots: `item_description`, `quantity`, `plant`, `need_by_date`, `urgency`. Returns draft PR or asks follow-up questions for missing/vague fields.
+   - `policy.py`: Policy amendment upload (`POST /api/policy/upload`) — takes amendment document text/PDF, uses LLM to generate structured JSON diff, and saves as draft policy version. `POST /api/policy/{version_id}/approve` activates it.
+   - `buyers.py`: Buyer workspace endpoints: `GET /api/requirements` (list decisions), `POST /api/requirements/{id}/approve`, `POST /api/requirements/{id}/override` (with mandatory comment).
 
 2. **Frontend UI (`frontend/`)**:
    - React 18 + Vite + Tailwind CSS.
-   - Screen 1: Employee Chat Intake (Conversational slot-filling).
-   - Screen 2: Buyer Workspace (Review decisions, approve, override with comments).
+   - Screen 1: Employee Chat Intake (Interactive conversation to raise PRs).
+   - Screen 2: Buyer Workspace (View requirements, decision breakdown, approve / override with comment).
    - Screen 3: Policy Admin (View active policy, upload amendment, view diff, approve/activate).
-   - Screen 4: Batch Processing (Upload CSV, view progress, download CSV export).
+   - Screen 4: Batch Processing (Upload CSV, view progress, download Section 4 CSV export).
    - Screen 5: Preferred Supplier Explorer.
 
-3. **Documentation Files**:
-   - `DECISIONS.md`: All 10 pre-planned decisions + tie-breaker and scoring justifications.
-   - `APPROACH.md`: Tools used, AI tool disclosure, architecture explanation.
-   - `README.md`: One-command Docker run instructions.
+3. **Final Polish & Delivery**:
+   - Write `APPROACH.md` (AI tool disclosure, architecture overview).
+   - Write `README.md` (One-command run instructions: `docker compose up --build`).
+   - Git commit and push to remote.
