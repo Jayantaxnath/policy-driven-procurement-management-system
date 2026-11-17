@@ -6,8 +6,28 @@ Implements Clause 1.1 and 1.2:
 - Distinguishes high-confidence matches vs ambiguous matches vs NEW items.
 """
 import re
+from difflib import SequenceMatcher
 from typing import Tuple, Optional, List, Dict, Any
-from rapidfuzz import fuzz
+
+
+def _token_sort_ratio(s1: str, s2: str) -> float:
+    """Sort tokens alphabetically, then compare sequence similarity (0-100)."""
+    t1 = " ".join(sorted(s1.split()))
+    t2 = " ".join(sorted(s2.split()))
+    return SequenceMatcher(None, t1, t2).ratio() * 100
+
+
+def _token_set_ratio(s1: str, s2: str) -> float:
+    """Intersection-over-union of token sets (0-100)."""
+    set1 = set(s1.split())
+    set2 = set(s2.split())
+    if not set1 and not set2:
+        return 100.0
+    if not set1 or not set2:
+        return 0.0
+    intersection = len(set1 & set2)
+    union = len(set1 | set2)
+    return (intersection / union) * 100
 
 COMMON_ABBREVIATIONS = {
     r"\bbrg\b": "ball bearing",
@@ -94,9 +114,9 @@ class ItemMatcher:
         best_match = None
 
         for code, norm_desc, item in self.normalized_catalog:
-            # Token sort and token set ratios
-            score_ts = fuzz.token_sort_ratio(norm_query, norm_desc)
-            score_set = fuzz.token_set_ratio(norm_query, norm_desc)
+            # Token sort and token set ratios (pure Python, no C extensions)
+            score_ts = _token_sort_ratio(norm_query, norm_desc)
+            score_set = _token_set_ratio(norm_query, norm_desc)
             score = max(score_ts, score_set) / 100.0
             
             if score > best_score:
