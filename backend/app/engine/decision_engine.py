@@ -11,9 +11,9 @@ from app.engine.ceiling_ledger import RunCeilingLedger
 from app.engine.supplier_ranker import compute_preferred_suppliers, suggest_suppliers_for_sourcing
 
 class PolicyDecisionEngine:
-    def __init__(self, policy_definition: Dict[str, Any]):
+    def __init__(self, policy_definition: Dict[str, Any], version_id: Optional[str] = None):
         self.policy = policy_definition
-        self.version = policy_definition.get("policy_version", "v5.0")
+        self.version = version_id or policy_definition.get("policy_version", "v5.0")
         self.parameters = policy_definition.get("parameters", {})
         self.global_constraints = policy_definition.get("global_constraints", [])
         
@@ -55,7 +55,7 @@ class PolicyDecisionEngine:
                 "decision": "SOURCING_REQUEST",
                 "route": "NEW_ITEM_SOURCING",
                 "supplier_id": None,
-                "unit_price": None,
+                "unit_price": unit_price if (unit_price is not None and unit_price > 0) else None,
                 "group_value_inr": round(group_value_inr, 2),
                 "suggested_supplier_ids": None,
                 "policy_version": self.version,

@@ -5,6 +5,7 @@ __pycache__/
 node_modules/
 dist/
 .DS_Store
+.pytest_cache
 
 HANDOVER_PROGRESS.md
 fixes

@@ -4,7 +4,7 @@ Corvo Engineering - Procurement Engine FastAPI Application.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.routes import batch
+from app.api.routes import batch, buyers, policy, chat
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -21,8 +21,10 @@ app.add_middleware(
 )
 
 app.include_router(batch.router, prefix="/api")
+app.include_router(buyers.router, prefix="/api")
+app.include_router(policy.router, prefix="/api")
+app.include_router(chat.router, prefix="/api")
 
 @app.get("/health")
 def health():
     return {"status": "ok", "version": settings.APP_VERSION, "app": settings.APP_NAME}
-

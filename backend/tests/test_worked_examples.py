@@ -19,8 +19,8 @@ df_batch = pd.read_csv(batch_csv_path)
 
 print(f"Loaded {len(df_batch)} lines from {batch_csv_path}")
 
-# Run pipeline
-output_rows, stats = process_pr_batch(df_batch, session)
+# Run pipeline against baseline v5.0
+output_rows, stats = process_pr_batch(df_batch, session, policy_version_id="v5.0")
 print(f"Processed batch. Total lines: {stats['total_lines']}, Requirements: {stats['total_requirements']}, POs: {stats['total_pos']}, Sourcing: {stats['total_sourcing']}, Unprocessed: {stats['total_not_processed']}")
 
 # Create lookup by (pr_no, pr_line)

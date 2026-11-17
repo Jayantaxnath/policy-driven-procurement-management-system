@@ -259,7 +259,7 @@ class BuyerAction(Base):
 
 class AuditLog(Base):
     __tablename__ = "audit_log"
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     event_type: Mapped[str] = mapped_column(String(50), nullable=False)
     entity_type: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     entity_id: Mapped[Optional[str]] = mapped_column(Text, nullable=True)

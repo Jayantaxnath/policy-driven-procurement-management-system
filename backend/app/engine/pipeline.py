@@ -129,9 +129,14 @@ def load_system_state(session: Session, policy_version_id: Optional[str] = None)
     if policy_version_id:
         pv = session.get(PolicyVersion, policy_version_id)
     else:
-        pv = session.query(PolicyVersion).filter_by(status="ACTIVE").order_by(PolicyVersion.effective_date.desc()).first()
+        pv = session.query(PolicyVersion).filter_by(status="ACTIVE").order_by(PolicyVersion.created_at.desc()).first()
+        if not pv:
+            pv = session.query(PolicyVersion).order_by(PolicyVersion.created_at.desc()).first()
         
-    policy_def = pv.rules_definition if pv else {}
+    active_version_id = pv.version_id if pv else (policy_version_id or "v5.0")
+    import copy
+    policy_def = copy.deepcopy(pv.rules_definition) if pv and pv.rules_definition else {}
+    policy_def["policy_version"] = active_version_id
     
     return {
         "plants": plants,
@@ -142,7 +147,8 @@ def load_system_state(session: Session, policy_version_id: Optional[str] = None)
         "po_history_by_item": po_history_by_item,
         "contract_history_by_item": contract_history_by_item,
         "ceiling_ledger": ceiling_ledger,
-        "policy_def": policy_def
+        "policy_def": policy_def,
+        "policy_version": active_version_id
     }
 
 def process_pr_batch(
@@ -156,7 +162,7 @@ def process_pr_batch(
     """
     state = load_system_state(session, policy_version_id)
     matcher = ItemMatcher(state["items_list"])
-    decision_engine = PolicyDecisionEngine(state["policy_def"])
+    decision_engine = PolicyDecisionEngine(state["policy_def"], version_id=state["policy_version"])
     ceiling_ledger = state["ceiling_ledger"]
     
     # Convert DataFrame to records
@@ -275,6 +281,10 @@ def process_pr_batch(
                 "pr_no": line["pr_no"],
                 "pr_line": line["pr_line"],
                 "resolved_item_code": grp.resolved_item_code,
+                "plant": grp.plant,
+                "urgency": grp.urgency,
+                "quantity": line.get("quantity", 1.0),
+                "uom": grp.uom,
                 "group_id": grp.group_id,
                 "po_id": po_id if out["decision"] == "PO" else None,
                 "decision": out["decision"],
@@ -283,7 +293,7 @@ def process_pr_batch(
                 "unit_price": out["unit_price"],
                 "group_value_inr": out["group_value_inr"],
                 "suggested_supplier_ids": out["suggested_supplier_ids"],
-                "policy_version": out["policy_version"],
+                "policy_version": state["policy_version"],
                 "reason": out["reason"]
             }
             final_output_rows.append(row)
@@ -294,6 +304,10 @@ def process_pr_batch(
             "pr_no": unproc["pr_no"],
             "pr_line": unproc["pr_line"],
             "resolved_item_code": unproc["resolved_item_code"],
+            "plant": unproc.get("plant"),
+            "urgency": unproc.get("urgency", "Normal"),
+            "quantity": unproc.get("quantity", 0.0),
+            "uom": unproc.get("uom", "NOS"),
             "group_id": f"UNPROC-{unproc['pr_no']}-{unproc['pr_line']}",
             "po_id": None,
             "decision": "NOT_PROCESSED",
@@ -302,7 +316,7 @@ def process_pr_batch(
             "unit_price": None,
             "group_value_inr": 0.0,
             "suggested_supplier_ids": None,
-            "policy_version": decision_engine.version,
+            "policy_version": state["policy_version"],
             "reason": unproc["reason"]
         }
         final_output_rows.append(row)
