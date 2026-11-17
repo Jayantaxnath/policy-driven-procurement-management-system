@@ -101,8 +101,8 @@ export default function PolicyAdmin() {
     setSavingParams(true);
     try {
       const params = {};
-      selectedVersion.rules_definition.parameters &&
-        Object.entries(selectedVersion.rules_definition.parameters).forEach(([k, v]) => {
+      const paramsDict = selectedVersion.rules_definition.parameters || {};
+      Object.entries(paramsDict).forEach(([k, v]) => {
           const el = document.getElementById(`param-${k}`);
           if (el) params[k] = el.value === '' ? v : Number(el.value);
         });
@@ -147,6 +147,23 @@ export default function PolicyAdmin() {
       return `₹${v.toLocaleString('en-IN')}`;
     }
     return String(v);
+  };
+
+  // Diff-aware value formatter: extracts param key from paths like
+  // "parameters.clubbing_window_days" and renders without ₹ for day/hour counts.
+  const formatDiffValue = (path, val) => {
+    if (val === null || val === undefined) return 'None';
+    if (typeof val === 'object') {
+      return JSON.stringify(val, null, 2);
+    }
+    if (typeof path === 'string' && path.startsWith('parameters.')) {
+      const key = path.split('.').pop();
+      return renderParamValue(key, val);
+    }
+    if (typeof val === 'number') {
+      return `₹${val.toLocaleString('en-IN')}`;
+    }
+    return String(val);
   };
 
   return (
@@ -349,8 +366,8 @@ export default function PolicyAdmin() {
                   </div>
                   <div className="text-slate-600 text-[11px] mt-1 font-sans">
                     Status: <span className={`font-bold ${selectedVersion.status === 'ACTIVE' ? 'text-emerald-700' : 'text-slate-700'}`}>{selectedVersion.status}</span>
-                    &bull; Effective: <span className="font-mono font-bold">{selectedVersion.effective_date}</span>
-                    &bull; Approved By: <span className="font-bold">{selectedVersion.created_by}</span>
+                    {' • '} Effective: <span className="font-mono font-bold">{selectedVersion.effective_date}</span>
+                    {' • '} Approved By: <span className="font-bold">{selectedVersion.created_by}</span>
                   </div>
                 </div>
 
@@ -412,7 +429,7 @@ export default function PolicyAdmin() {
                                 Previous Value:
                               </span>
                               <pre className="whitespace-pre-wrap break-all text-[11px]">
-                                {formatValue(d.old_value)}
+                                {formatDiffValue(d.path, d.old_value)}
                               </pre>
                             </div>
                           ) : (
@@ -421,7 +438,7 @@ export default function PolicyAdmin() {
                                 Previous Value:
                               </span>
                               <pre className="whitespace-pre-wrap break-all text-[11px]">
-                                {formatValue(d.old_value)}
+                                {formatDiffValue(d.path, d.old_value)}
                               </pre>
                             </div>
                           )}
@@ -440,7 +457,7 @@ export default function PolicyAdmin() {
                                 Updated Value:
                               </span>
                               <pre className="whitespace-pre-wrap break-all text-[11px]">
-                                {formatValue(d.new_value)}
+                                {formatDiffValue(d.path, d.new_value)}
                               </pre>
                             </div>
                           )}
@@ -510,8 +527,8 @@ export default function PolicyAdmin() {
                     )}
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-                    {selectedVersion?.rules_definition?.parameters &&
-                      Object.entries(selectedVersion.rules_definition.parameters).map(([k, v]) => {
+                    {selectedVersion?.rules_definition?.parameters ? (
+                      Object.entries(selectedVersion.rules_definition.parameters || {}).map(([k, v]) => {
                         const isComplexSpan =
                           k === 'supplier_ranking_weights' || k === 'recency_buckets';
                         const colSpan = isComplexSpan ? 3 : 1;
@@ -529,7 +546,7 @@ export default function PolicyAdmin() {
                               {isComplexSpan && typeof v === 'object' && !Array.isArray(v) ? (
                                 // Nested object (e.g. supplier_ranking_weights) → pill badges
                                 <div className="flex flex-wrap gap-1.5">
-                                  {Object.entries(v).map(([sk, sv]) => (
+                                  {Object.entries(v || {}).map(([sk, sv]) => (
                                     <span
                                       key={sk}
                                       className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs"
@@ -544,13 +561,13 @@ export default function PolicyAdmin() {
                               ) : Array.isArray(v) ? (
                                 // Array (e.g. recency_buckets) → inline pills
                                 <div className="flex flex-wrap gap-1.5">
-                                  {v.map((item, i) => (
+                                  {(v || []).map((item, i) => (
                                     <span
                                       key={i}
                                       className="inline-flex items-center gap-1 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs"
                                     >
                                       {typeof item === 'object' && item !== null
-                                        ? Object.entries(item).map(([ik, iv]) => `${formatParamKey(ik)}=${iv}`).join(', ')
+                                        ? Object.entries(item || {}).map(([ik, iv]) => `${formatParamKey(ik)}=${iv}`).join(', ')
                                         : String(item)}
                                     </span>
                                   ))}
@@ -569,7 +586,8 @@ export default function PolicyAdmin() {
                             </div>
                           </div>
                         );
-                      })}
+                      }))
+                    : null}
                   </div>
                   {!writeAccess && (
                     <p className="text-[10px] text-slate-400 mt-2 italic">
