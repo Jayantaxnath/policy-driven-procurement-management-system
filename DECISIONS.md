@@ -105,3 +105,4 @@
 - **Ambiguity**: If an uncataloged item lacks an `estimated_unit_price` in the PR, how is it valued?
 - **Decision**: If `estimated_unit_price` is provided, value = $\text{quantity} \times \text{estimated\_unit\_price}$. If missing, group value is recorded as $0.0$ and flagged for buyer price estimation during sourcing.
 - **Justification**: Matches Clause 1.2 and Worked Example 13 (`PR-26-00170/1`, Drinking water purifier valued at ₹1,41,100).
+
