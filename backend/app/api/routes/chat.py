@@ -41,22 +41,18 @@ class SubmitPRRequest(BaseModel):
 
 
 def _strip_markdown(text: str) -> str:
-    """
-    Strip common markdown symbols (** *, backticks, headings) so the chat UI
-    renders plain conversational text instead of raw markdown.
-    """
+    """Strip common markdown symbols so the chat UI renders plain text."""
     if not text:
         return text
     text = re.sub(r"\*\*(.*?)\*\*", r"\1", text)   # **bold** -> bold
     text = re.sub(r"\*(.*?)\*", r"\1", text)        # *italic* -> italic
-    text = re.sub(r"`(.*?)`", r"\1", text)          # `code` -> code
+    text = re.sub(r"\`(.*?)\`", r"\1", text)          # `code` -> code
     text = re.sub(r"^#{1,6}\s*", "", text, flags=re.MULTILINE)  # headings
     return text
 
+
 def extract_slots_with_llm(user_message: str, current_slots: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Uses Gemini Flash if configured to extract PR slots.
-    """
+    """Uses Gemini Flash if configured to extract PR slots."""
     if not settings.GEMINI_API_KEY:
         return {}
 
@@ -67,26 +63,40 @@ def extract_slots_with_llm(user_message: str, current_slots: Dict[str, Any]) -> 
         prompt = f"""
 You are an expert procurement intake assistant for Corvo Engineering.
 Today is {today_str}.
-Extract procurement request slots from the user's message and update existing slots.
-Valid plants: PUN1 (Pune), CHK1 (Chakan).
-Valid urgency: Normal, Urgent, Emergency.
 
-Existing slots:
-{json.dumps(current_slots, indent=2)}
+You extract structured procurement request slots from a natural language message.
 
-User Message: "{user_message}"
+EXISTING SLOTS (already collected in this conversation):
+{json.dumps(current_slots, indent=2) if current_slots else "{}"}
 
-Return ONLY a valid JSON object with keys:
-- "item_description": string or null
-- "item_code": string or null (e.g. ITM-1001)
-- "quantity": float or null
-- "uom": string or null (e.g. NOS, KG, SET, MTR)
-- "plant": "PUN1" | "CHK1" | null
-- "need_by_date": "YYYY-MM-DD" | null
-- "urgency": "Normal" | "Urgent" | "Emergency" | null
-- "estimated_unit_price": float or null
-- "requester": string or null
-- "department": string or null
+NEW USER MESSAGE:
+"{user_message}"
+
+RULES:
+1. Extract ONLY the item name for "item_description". Do NOT include quantity, plant, urgency, dates, or intent/action words like "need", "want", "request", "buy", "emergency", "breakdown", "replacement".
+   - Example: For "I need 20 ball bearings for Pune plant by Friday", return "ball bearings".
+   - Example: For "Emergency breakdown replacement ball bearings for Pune plant today", return "ball bearings".
+   - Example: For "Request custom CNC tooling quote for Pune plant, quantity 5, estimated price 50000 per unit", return "custom CNC tooling".
+2. Valid plants: PUN1 (Pune), CHK1 (Chakan). Map "Pune" -> "PUN1", "Chakan" -> "CHK1".
+3. Valid urgency: Normal, Urgent, Emergency. "Emergency" or "breakdown" -> "Emergency".
+4. For dates: "today" -> {today_str}, "tomorrow" -> next day, "Friday" -> next Friday. Return YYYY-MM-DD.
+5. For estimated_unit_price: extract numeric value. "50k" -> 50000, "5 lakh" -> 500000.
+6. Only update slots that are explicitly mentioned in the new message. Keep existing slots for fields not mentioned.
+7. Return ONLY a valid JSON object. No markdown, no explanation.
+
+Return this JSON structure (use null for fields not present in message):
+{{
+  "item_description": string or null,
+  "item_code": string or null,
+  "quantity": float or null,
+  "uom": string or null,
+  "plant": "PUN1" | "CHK1" | null,
+  "need_by_date": "YYYY-MM-DD" | null,
+  "urgency": "Normal" | "Urgent" | "Emergency" | null,
+  "estimated_unit_price": float or null,
+  "requester": string or null,
+  "department": string or null
+}}
 """
         response = client.models.generate_content(
             model=settings.GEMINI_MODEL_PRIMARY,
@@ -96,25 +106,29 @@ Return ONLY a valid JSON object with keys:
         if text.startswith("```"):
             text = re.sub(r"^```(?:json)?\n?", "", text)
             text = re.sub(r"\n?```$", "", text)
-        return json.loads(text)
+        parsed = json.loads(text)
+        if not isinstance(parsed, dict):
+            return {}
+        return parsed
     except Exception:
         return {}
 
-def extract_slots_heuristics(user_message: str, current_slots: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    Deterministic rule-based slot extraction fallback.
-    """
+
+def extract_slots_heuristics(
+    user_message: str, current_slots: Dict[str, Any]
+) -> Dict[str, Any]:
+    """Deterministic rule-based slot extraction fallback."""
     slots = dict(current_slots or {})
     text = user_message.strip()
     text_lower = text.lower()
 
-    # 1. Plant
+    # 1. Plant extraction
     if "pun1" in text_lower or "pune" in text_lower:
         slots["plant"] = "PUN1"
     elif "chk1" in text_lower or "chakan" in text_lower:
         slots["plant"] = "CHK1"
 
-    # 2. Urgency
+    # 2. Urgency extraction
     if "emergency" in text_lower or "breakdown" in text_lower:
         slots["urgency"] = "Emergency"
     elif "urgent" in text_lower or "critical" in text_lower or "asap" in text_lower:
@@ -127,7 +141,7 @@ def extract_slots_heuristics(user_message: str, current_slots: Dict[str, Any]) -
     if itm_match:
         slots["item_code"] = itm_match.group(1).upper()
 
-    # 4. Quantity and UOM
+    # 4. Quantity extraction
     qty_match = re.search(r"\b(\d+(?:\.\d+)?)\s*(?:units?|nos?|pieces?|pcs?|kg|meters?|mtr|sets?)?\b", text_lower)
     if qty_match and not slots.get("quantity"):
         try:
@@ -137,44 +151,105 @@ def extract_slots_heuristics(user_message: str, current_slots: Dict[str, Any]) -
         except ValueError:
             pass
 
-    # 5. Need by date
-    if "tomorrow" in text_lower:
+    # 5. Need by date extraction
+    if "today" in text_lower:
+        slots["need_by_date"] = date.today().isoformat()
+    elif "tomorrow" in text_lower:
         slots["need_by_date"] = (date.today() + timedelta(days=1)).isoformat()
     elif "next week" in text_lower:
         slots["need_by_date"] = (date.today() + timedelta(days=7)).isoformat()
     else:
-        date_match = re.search(r"\b(202\d[-/]\d{1,2}[-/]\d{1,2})\b", text)
-        if date_match:
-            try:
-                d_str = date_match.group(1).replace("/", "-")
-                parsed_d = datetime.strptime(d_str, "%Y-%m-%d").date()
-                slots["need_by_date"] = parsed_d.isoformat()
-            except ValueError:
-                pass
+        day_map = {
+            "monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3,
+            "friday": 4, "saturday": 5, "sunday": 6,
+        }
+        today_weekday = date.today().weekday()
+        for day_name, day_num in day_map.items():
+            if day_name in text_lower:
+                days_ahead = (day_num - today_weekday) % 7
+                if days_ahead == 0:
+                    days_ahead = 7
+                slots["need_by_date"] = (date.today() + timedelta(days=days_ahead)).isoformat()
+                break
+        if not slots.get("need_by_date"):
+            date_match = re.search(r"\b(202\d[-/]\d{1,2}[-/]\d{1,2})\b", text)
+            if date_match:
+                try:
+                    d_str = date_match.group(1).replace("/", "-")
+                    parsed_d = datetime.strptime(d_str, "%Y-%m-%d").date()
+                    slots["need_by_date"] = parsed_d.isoformat()
+                except ValueError:
+                    pass
 
-    # 6. Description
+    # 6. Item description extraction (simple word-by-word, no regex mangling)
     if not slots.get("item_description") and not slots.get("item_code"):
-        # Remove common stop phrases
-        cleaned = re.sub(r"\b(i need|please order|can we get|require|units? of|for pune|for chakan|urgent|emergency|normal|tomorrow|today)\b", "", text, flags=re.IGNORECASE).strip()
-        cleaned = re.sub(r"\b\d+\b", "", cleaned).strip()
+        # Words to remove (lowercase) - these are context/intent words, NOT item names
+        remove_words = {
+            "i", "need", "please", "order", "can", "we", "get", "require",
+            "want", "to", "buy", "purchase", "request", "quote", "replacement",
+            "for", "pune", "chakan", "pun1", "chk1", "emergency", "urgent",
+            "urgency", "breakdown", "critical", "asap", "today", "tomorrow",
+            "friday", "monday", "tuesday", "wednesday", "thursday", "saturday",
+            "sunday", "next", "week", "units", "nos", "pieces", "pcs", "kg",
+            "meters", "mtr", "sets", "liters", "litres", "price", "rate",
+            "cost", "budget", "estimated", "unit", "per", "total", "k",
+            "lakh", "lakhs", "some", "a", "an", "the", "by", "at", "of",
+            "in", "and", "or", "plant", "quantity", "me",
+        }
+        words = text.split()
+        kept = []
+        for w in words:
+            w_clean = w.strip(".,!?")
+            # Skip pure numbers (with optional trailing punctuation)
+            if re.match(r"^\d+(?:\.\d+)?$", w_clean):
+                continue
+            # Skip words in remove set (case-insensitive)
+            if w_clean.lower() in remove_words:
+                continue
+            # Skip currency symbols
+            if w_clean in ("₹", "$", "rs", "inr", "Rs", "INR"):
+                continue
+            # Skip price-like tokens (e.g., "50000")
+            if re.match(r"^\d+(?:,\d+)*(?:\.\d+)?$", w_clean):
+                continue
+            kept.append(w_clean)
+        cleaned = " ".join(kept).strip()
+        # Remove any remaining currency symbols
+        cleaned = cleaned.replace("₹", "").replace("$", "").strip()
         if len(cleaned) > 2:
             slots["item_description"] = cleaned
 
     # 7. Estimated Unit Price / Budget extraction
     if slots.get("estimated_unit_price") is None:
         price_patterns = [
-            r"(?:price|rate|estimated(?:\s+price)?|budget|cost|unit\s+price)\s*(?:of|is|at|:|=)?\s*(?:rs\.?|inr|₹)?\s*(\d+(?:,\d+)*(?:\.\d+)?)",
-            r"(?:rs\.?|inr|₹)\s*(\d+(?:,\d+)*(?:\.\d+)?)",
-            r"@\s*(?:rs\.?|inr|₹)?\s*(\d+(?:,\d+)*(?:\.\d+)?)"
+            r"(?:price|rate|estimated(?:\s+price)?|budget|cost|unit\s+price)\s*(?:of|is|at|:|=)?\s*(?:rs\.?|inr|₹)?\s*(\d+(?:,\d+)*(?:\.\d+)?)\s*(k|lakh|lakhs)?",
+            r"(?:rs\.?|inr|₹)\s*(\d+(?:,\d+)*(?:\.\d+)?)\s*(k|lakh|lakhs)?",
+            r"@\s*(?:rs\.?|inr|₹)?\s*(\d+(?:,\d+)*(?:\.\d+)?)",
         ]
         for p in price_patterns:
             m = re.search(p, text_lower)
             if m:
                 try:
                     p_val = float(m.group(1).replace(",", ""))
-                    if p_val > 0:
+                    suffix = m.group(2) if m.lastindex >= 2 else ""
+                    if suffix:
+                        suffix = suffix.lower()
+                        if suffix == "k":
+                            p_val *= 1000
+                        elif suffix in ("lakh", "lakhs"):
+                            p_val *= 100000
+                    text_before = text_lower[: m.start()]
+                    is_total = bool(re.search(r"\btotal\b", text_before))
+                    if is_total:
+                        slots["estimated_total_price"] = p_val
+                        if slots.get("quantity") and float(slots["quantity"]) > 0:
+                            slots["estimated_unit_price"] = p_val / float(slots["quantity"])
+                        else:
+                            slots["estimated_unit_price"] = None
+                    else:
                         slots["estimated_unit_price"] = p_val
-                        break
+                        slots["estimated_total_price"] = None
+                    break
                 except ValueError:
                     pass
 
@@ -187,6 +262,7 @@ def extract_slots_heuristics(user_message: str, current_slots: Dict[str, Any]) -
 
     return slots
 
+
 @router.post("/chat/pr-intake")
 def chat_pr_intake(
     payload: ChatMessageRequest,
@@ -198,14 +274,28 @@ def chat_pr_intake(
     """
     slots = dict(payload.current_slots or {})
 
-    # Extract via LLM first if available, then fallback to heuristics
-    llm_slots = extract_slots_with_llm(payload.message, slots)
+    # Extract via LLM first if available
+    llm_slots = extract_slots_with_llm(user_message=payload.message, current_slots=slots)
     if llm_slots:
         for k, v in llm_slots.items():
             if v is not None:
                 slots[k] = v
-    else:
-        slots = extract_slots_heuristics(payload.message, slots)
+
+    # Run heuristics to fill any gaps LLM missed
+    heuristic_slots = extract_slots_heuristics(payload.message, slots)
+    for k, v in heuristic_slots.items():
+        if v is not None and slots.get(k) is None:
+            slots[k] = v
+
+    # Calculate estimated_unit_price from estimated_total_price if quantity is known
+    if slots.get("estimated_total_price") and slots.get("quantity") and float(slots["quantity"]) > 0:
+        if not slots.get("estimated_unit_price"):
+            slots["estimated_unit_price"] = slots["estimated_total_price"] / float(slots["quantity"])
+
+    # Calculate estimated_total_price from estimated_unit_price if quantity is known
+    if slots.get("estimated_unit_price") and slots.get("quantity") and float(slots["quantity"]) > 0:
+        if not slots.get("estimated_total_price"):
+            slots["estimated_total_price"] = slots["estimated_unit_price"] * float(slots["quantity"])
 
     # Validate slots and check what is missing
     missing = []
@@ -216,11 +306,9 @@ def chat_pr_intake(
     if not slots.get("plant") or slots.get("plant") not in ["PUN1", "CHK1"]:
         missing.append("target plant (Pune - PUN1 or Chakan - CHK1)")
     if not slots.get("need_by_date"):
-        # Default to 7 days from now if not specified
         slots["need_by_date"] = (date.today() + timedelta(days=7)).isoformat()
 
     if missing:
-        # Prompt for missing slots
         if "item description or item code" in missing:
             msg = "Could you please specify which item you need to procure?"
         elif "quantity" in missing:
@@ -229,7 +317,6 @@ def chat_pr_intake(
             msg = _strip_markdown("Which plant is this requirement for: Pune (PUN1) or Chakan (CHK1)?")
         else:
             msg = f"Please provide the following details to proceed: {', '.join(missing)}."
-
         return {
             "status": "NEEDS_INFO",
             "message": msg,
@@ -241,7 +328,7 @@ def chat_pr_intake(
     # All required slots present -> Run Deterministic Decision Engine
     state = load_system_state(db)
     matcher = ItemMatcher(state["items_list"])
-    raw_code = slots.get("item_code")
+    raw_code = slots.get("resolved_item_code") or slots.get("item_code")
     desc = slots.get("item_description", "")
     resolved_code, conf, item_info = matcher.resolve(raw_code, desc)
 
@@ -264,13 +351,12 @@ def chat_pr_intake(
 
     df_single = pd.DataFrame([pr_row])
     decision_rows, stats = process_pr_batch(df_single, db)
-
     decision_res = decision_rows[0] if decision_rows else {}
 
     # Craft conversational explanation
     plant_name = "Pune (PUN1)" if slots["plant"] == "PUN1" else "Chakan (CHK1)"
     item_label = f"{resolved_code} ({item_info.get('description', desc)})" if resolved_code and item_info else (desc or "Custom Item")
-    
+
     if decision_res.get("decision") == "PO":
         sup_id = decision_res.get("supplier_id")
         sup_info = state["active_suppliers"].get(sup_id, {})
@@ -322,6 +408,7 @@ def chat_pr_intake(
             "item_info": item_info
         }
     }
+
 
 @router.post("/chat/submit-pr")
 def submit_chat_pr(
@@ -379,8 +466,8 @@ def submit_chat_pr(
         description=payload.description,
         quantity=payload.quantity,
         uom=payload.uom,
-        estimated_unit_price=payload.estimated_unit_price or decision.get("unit_price"),
-        need_by_date=datetime.strptime(payload.need_by_date, "%Y-%m-%d").date(),
+        estimated_unit_price=payload.estimated_unit_price,
+        need_by_date=payload.need_by_date,
         urgency=payload.urgency,
         ingestion_status="PROCESSED"
     )

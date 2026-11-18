@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Send, Bot, User, CheckCircle2, AlertCircle, Sparkles, Building, Calendar, Layers, Clock, ArrowRight, ShieldCheck, ArrowRightCircle } from 'lucide-react';
+import { chatIntake, submitChatPR } from '../api';
 
 const stripMarkdown = (text) => {
   if (!text) return text;
@@ -7,8 +9,6 @@ const stripMarkdown = (text) => {
     .replace(/\*(.*?)\*/g, '$1')        // *italic* -> italic
     .replace(/`(.*?)`/g, '$1');         // `code` -> code
 };
-import { Send, Bot, User, CheckCircle2, AlertCircle, Sparkles, Building, Calendar, Layers, Clock, ArrowRight, ShieldCheck, ArrowRightCircle } from 'lucide-react';
-import { chatIntake, submitChatPR } from '../api';
 
 export default function ChatIntake() {
   const [messages, setMessages] = useState([

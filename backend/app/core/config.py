@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     APP_VERSION: str = "1.0.0"
 
     class Config:
-        env_file = ".env"
+        env_file = [".env", "../.env", "../../.env"]
         extra = "ignore"
 
 settings = Settings()
