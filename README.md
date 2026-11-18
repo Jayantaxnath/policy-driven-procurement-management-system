@@ -110,14 +110,5 @@ Validates the complete lifecycle: Policy Admin, Chat Intake, PR Submission, Buye
 
 ## Project Documentation
 
-All documentation is in the [`docs/`](./docs/) folder:
-
-- **`docs/README.md`** — Project overview and quickstart
-- **`docs/APPROACH.md`** — AI tool usage disclosure, 7-stage deterministic pipeline architecture, and worked example validation.
-- **`docs/DECISIONS.md`** — Complete log of 10 architectural and business ambiguity decisions with justifications.
-- **`docs/MASTER_PLAN.md`** — Deep technical architecture specification.
-- **`docs/HANDOVER_PROGRESS.md`** — Phase-by-phase completion log and handover status.
-- **`docs/PRODUCTION_DECISIONS.md`** — Free-tier production deployment strategy (Render, Neon, Vercel).
-- **`docs/QUICKSTART_AND_TEST_GUIDE.md`** — How to run locally and verify with test suites.
-- **`docs/BUG_FIXES_AND_AUDIT.md`** — Complete log of bugs found, root causes, and fixes applied (critical for evaluator review).
-- **`docs/detailed inspection/`** — Detailed inspection notes and extracted policy text.
+- **`APPROACH.md`** — AI tool usage disclosure, 7-stage deterministic pipeline architecture, and worked example validation.
+- **`DECISIONS.md`** — Complete log of architectural and business ambiguity decisions with justifications.
