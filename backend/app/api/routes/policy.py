@@ -11,6 +11,7 @@ import uuid
 import copy
 import re
 import json
+import logging
 from datetime import datetime, date
 from typing import Optional, Dict, Any, List, Tuple
 from fastapi import APIRouter, Depends, HTTPException, Body, UploadFile, File, Form
@@ -21,6 +22,8 @@ from sqlalchemy import desc
 from app.db.database import get_db
 from app.db.models import PolicyVersion, PolicyApproval, AuditLog
 from app.core.config import settings
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Policy Administration"])
 
@@ -362,9 +365,24 @@ def upload_policy_amendment(
     """
     Upload an amendment (text or JSON) to create a new DRAFT policy version with automated diff generation.
     """
+    logger.info(
+        "Policy amendment upload started",
+        extra={
+            "version_id": payload.version_id,
+            "name": payload.name,
+            "created_by": payload.created_by,
+            "has_amendment_text": bool(payload.amendment_text),
+            "has_rules_definition": bool(payload.rules_definition),
+        }
+    )
+
     # Check if version_id already exists
     existing = db.query(PolicyVersion).filter(PolicyVersion.version_id == payload.version_id).first()
     if existing:
+        logger.warning(
+            "Policy amendment upload rejected: version_id already exists",
+            extra={"version_id": payload.version_id}
+        )
         raise HTTPException(status_code=400, detail=f"Policy version '{payload.version_id}' already exists.")
 
     active_policy = get_active_policy_row(db)
@@ -376,6 +394,7 @@ def upload_policy_amendment(
     elif payload.amendment_text:
         updated_rules, change_note = parse_amendment_with_llm_or_heuristics(payload.amendment_text, base_rules)
     else:
+        logger.warning("Policy amendment upload rejected: neither rules_definition nor amendment_text provided")
         raise HTTPException(status_code=400, detail="Either rules_definition or amendment_text must be provided.")
 
     if isinstance(updated_rules, dict):
@@ -406,6 +425,15 @@ def upload_policy_amendment(
     )
     db.add(approval)
     db.commit()
+
+    logger.info(
+        "Policy amendment uploaded successfully",
+        extra={
+            "version_id": payload.version_id,
+            "diff_count": len(diff),
+            "change_summary": change_note,
+        }
+    )
 
     return {
         "status": "success",

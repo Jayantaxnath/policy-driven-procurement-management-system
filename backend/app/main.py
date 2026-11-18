@@ -14,11 +14,8 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://policy-driven-procurement-management-zpv6.onrender.com",
-        "http://localhost:5173",
-    ],
-    allow_credentials=False,  # ← Changed from True to False
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
