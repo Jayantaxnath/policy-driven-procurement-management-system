@@ -119,8 +119,8 @@ export default function ChatIntake() {
   };
 
   const samplePrompts = [
-    "20 ball bearings for Pune plant by Friday",
-    "50 Pneumatic Cylinders for Chakan next week",
+    "I need 20 ball bearings for Pune plant by Friday",
+    "I need some ball bearings",
     "Emergency breakdown replacement ball bearings for Pune plant today",
     "Request custom CNC tooling quote"
   ];
