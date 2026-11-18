@@ -28,9 +28,11 @@ export default function BuyerWorkspace() {
   const [actionError, setActionError] = useState(null);
   const [activeTab, setActiveTab] = useState('list'); // 'list' | 'audit'
   const [auditActions, setAuditActions] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [approvingId, setApprovingId] = useState(null);
 
   const loadRequirements = async () => {
-    setLoading(true);
+    setRefreshing(true);
     try {
       const data = await fetchRequirements({
         plant: plant || undefined,
@@ -47,6 +49,7 @@ export default function BuyerWorkspace() {
       console.error(err);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -82,15 +85,19 @@ export default function BuyerWorkspace() {
   };
 
   const handleApprove = async (id) => {
+    setApprovingId(id);
     try {
       await approveRequirement(id, 'Buyer John Doe', 'Policy criteria verified and accepted');
       alert(`Requirement ${id} successfully approved!`);
       loadRequirements();
+      loadAudit();
       if (selectedReq?.requirement_id === id) {
         handleSelectRequirement(id);
       }
     } catch (err) {
       alert(err.message);
+    } finally {
+      setApprovingId(null);
     }
   };
 
@@ -102,6 +109,7 @@ export default function BuyerWorkspace() {
       return;
     }
 
+    setApprovingId(selectedReq.requirement_id);
     try {
       await overrideRequirement(selectedReq.requirement_id, {
         buyerId: overrideForm.buyerId,
@@ -112,9 +120,12 @@ export default function BuyerWorkspace() {
       alert(`Requirement ${selectedReq.requirement_id} successfully overridden.`);
       setShowOverrideModal(false);
       loadRequirements();
+      loadAudit();
       handleSelectRequirement(selectedReq.requirement_id);
     } catch (err) {
       setActionError(err.message);
+    } finally {
+      setApprovingId(null);
     }
   };
 
@@ -153,8 +164,13 @@ export default function BuyerWorkspace() {
           <button
             onClick={loadRequirements}
             className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors flex items-center space-x-1"
+            disabled={refreshing}
           >
-            <RefreshCw className="w-3.5 h-3.5" />
+            {refreshing ? (
+              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <RefreshCw className="w-3.5 h-3.5" />
+            )}
             <span>Refresh</span>
           </button>
         </div>
@@ -440,9 +456,19 @@ export default function BuyerWorkspace() {
                   <button
                     onClick={() => handleApprove(selectedReq.requirement_id)}
                     className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 rounded-lg flex items-center justify-center space-x-1.5 transition-colors shadow-sm"
+                    disabled={approvingId === selectedReq.requirement_id}
                   >
-                    <Check className="w-4 h-4" />
-                    <span>Approve Decision</span>
+                    {approvingId === selectedReq.requirement_id ? (
+                      <>
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        <span>Approving...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-4 h-4" />
+                        <span>Approve Decision</span>
+                      </>
+                    )}
                   </button>
                   <button
                     onClick={() => setShowOverrideModal(true)}
@@ -596,8 +622,16 @@ export default function BuyerWorkspace() {
                 <button
                   type="submit"
                   className="px-4 py-1.5 rounded bg-amber-600 hover:bg-amber-700 text-white font-semibold"
+                  disabled={approvingId === selectedReq.requirement_id}
                 >
-                  Confirm Override
+                  {approvingId === selectedReq.requirement_id ? (
+                    <>
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      <span>Confirming...</span>
+                    </>
+                  ) : (
+                    'Confirm Override'
+                  )}
                 </button>
               </div>
             </form>
