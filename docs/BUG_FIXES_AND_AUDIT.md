@@ -144,6 +144,86 @@ policy-driven-procurement-management-system/
 
 ---
 
+---
+
+## 5. Adversarial QA Bug Fixes (Branch: bugfix/adversarial-qa)
+
+### 5.1 Critical
+
+#### 5.1.1 Contract Ceiling Consumption Not Persisted to DB
+- **Symptom:** Sequential batch runs could overspend contract ceilings
+- **Root Cause:** `RunCeilingLedger` tracked consumption in-memory only; `consumed_value` never written back to `contract_headers` table
+- **Fix:** Added DB update loop in `process_pr_batch` after PO consolidation to persist consumed values
+- **Files:** `backend/app/engine/pipeline.py`
+
+#### 5.1.2 Requirement Date Always Set to Today
+- **Symptom:** Contract validity and PO history lookback used today's date instead of actual PR dates
+- **Root Cause:** `req_date = date.today()` hardcoded in `batch.py` instead of deriving from PR lines
+- **Fix:** Now uses first line's `need_by_date` or `created_at` date
+- **Files:** `backend/app/api/routes/batch.py`
+
+### 5.2 High Priority
+
+#### 5.2.1 Global Constraint 5.7 Not Enforced in Decision Engine
+- **Symptom:** Blocked suppliers could still receive POs if contract had ceiling
+- **Root Cause:** `global_constraints` loaded but never evaluated in `evaluate_requirement()`
+- **Fix:** Added constraint check before contract PO path; nullifies winning contract if supplier is blocked
+- **Files:** `backend/app/engine/decision_engine.py`
+
+#### 5.2.2 "Urgent" Urgency Downgraded to "Normal"
+- **Symptom:** Urgent PR lines lost urgency when clubbed into requirements
+- **Root Cause:** `clubber.py` only checked for "Emergency", defaulting everything else to "Normal"
+- **Fix:** Preserve urgency hierarchy: Emergency > Urgent > Normal
+- **Files:** `backend/app/engine/clubber.py`
+
+#### 5.2.3 Expired Contracts Used for Supplier Reference Price
+- **Symptom:** Preferred supplier list used rates from expired contracts
+- **Root Cause:** `supplier_ranker.py` only checked `start_date <= as_of_date`, not `end_date`
+- **Fix:** Added `end_date >= as_of_date` condition
+- **Files:** `backend/app/engine/supplier_ranker.py`
+
+### 5.3 Medium
+
+#### 5.3.1 Buyer Approve Doesn't Create PO in DB
+- **Symptom:** Approving a PO requirement only logged the action, never created POHeader/POLine
+- **Root Cause:** `approve_requirement()` in `buyers.py` had no PO creation logic
+- **Fix:** Added POHeader + POLine creation when `decision == "PO"` and `po_id` exists
+- **Files:** `backend/app/api/routes/buyers.py`
+
+#### 5.3.2 Override Allows Invalid Route/Decision Combinations
+- **Symptom:** Buyer could set decision="PO" with a sourcing route
+- **Root Cause:** No validation between `new_route` and `new_decision` in override endpoint
+- **Fix:** Added validation that PO routes require "PO" decision and sourcing routes require "SOURCING_REQUEST"
+- **Files:** `backend/app/api/routes/buyers.py`
+
+#### 5.3.3 Zero Price Treated as Valid in Batch Ingestion
+- **Symptom:** NEW items with estimated price 0 had group_value_inr = 0, bypassing thresholds
+- **Root Cause:** `estimated_unit_price=0` stored as `0.0` instead of `None`
+- **Fix:** Treat 0 as missing (None)
+- **Files:** `backend/app/api/routes/batch.py`
+
+#### 5.3.4 Frontend Falsy Zero Display
+- **Symptom:** Values of 0 displayed as "-" or "TBD" instead of "0.00"
+- **Root Cause:** JavaScript falsy check (`val ? ... : fallback`) treats 0 as falsy
+- **Fix:** Changed to explicit null checks (`val != null ? ... : fallback`)
+- **Files:** `frontend/src/pages/BuyerWorkspace.jsx`, `frontend/src/pages/BatchProcessing.jsx`
+
+#### 5.3.5 PolicyAdmin Loses Selection After Save
+- **Symptom:** After saving parameters, view switched to active version instead of edited one
+- **Root Cause:** `loadData()` sets selectedVersion to active version
+- **Fix:** Added `handleSelectVersion()` call after `loadData()`
+- **Files:** `frontend/src/pages/PolicyAdmin.jsx`
+
+### 5.4 Low
+
+#### 5.4.1 Type Coercion in Condition Evaluator EQUALS
+- **Symptom:** `1 == True` evaluated to true, causing incorrect rule matching
+- **Root Cause:** Python `==` coerces types
+- **Fix:** Added strict type check: `actual_value == target_value and type(actual_value) is type(target_value)`
+- **Files:** `backend/app/engine/condition_evaluator.py`
+
+---
+
 ## 🎯 Evaluation Checklist
 
 | Criterion | Status |
