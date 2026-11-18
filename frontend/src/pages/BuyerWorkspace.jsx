@@ -262,7 +262,7 @@ export default function BuyerWorkspace() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 font-mono">
-                  {requirements.map((req) => {
+                  {(requirements || []).map((req) => {
                     const isSelected = selectedReq?.requirement_id === req.requirement_id;
                     return (
                       <tr

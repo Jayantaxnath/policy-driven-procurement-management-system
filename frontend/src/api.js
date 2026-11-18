@@ -98,7 +98,7 @@ export async function fetchBuyerActions() {
 // Policy
 export async function fetchActivePolicy() {
   const res = await fetch(`${BASE_URL}/policy/active`);
-  return res.json();
+  return res.json() || {};
 }
 
 export async function fetchPolicyVersions() {

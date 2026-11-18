@@ -54,7 +54,7 @@ export default function App() {
   const [activePolicyVersion, setActivePolicyVersion] = useState('v5.0');
 
   useEffect(() => {
-    fetchActivePolicy().then((p) => setActivePolicyVersion(p.version_id)).catch(() => {});
+    fetchActivePolicy().then((p) => setActivePolicyVersion(p?.version_id || 'v5.0')).catch(() => {});
   }, []);
 
   return (
