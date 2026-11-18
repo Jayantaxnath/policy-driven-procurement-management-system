@@ -41,7 +41,8 @@ def compute_preferred_suppliers(
     sup_contracts: Dict[str, List[Dict[str, Any]]] = {}
     for c in contracts:
         sid = c["supplier_id"]
-        if sid in active_suppliers and c["start_date"] <= as_of_date:
+        # Bug Fix: also check end_date to exclude expired contracts
+        if sid in active_suppliers and c["start_date"] <= as_of_date and c["end_date"] >= as_of_date:
             sup_contracts.setdefault(sid, []).append(c)
             
     candidate_ids = set(sup_pos.keys()) | set(sup_contracts.keys())

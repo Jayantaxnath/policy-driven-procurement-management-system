@@ -28,7 +28,8 @@ def evaluate_leaf_condition(condition: Dict[str, Any], context: Dict[str, Any]) 
     actual_value = get_field_value(context, field)
     
     if operator == "EQUALS":
-        return actual_value == target_value
+        # Bug Fix: strict type check to avoid Python coercion (1 == True, 0 == False)
+        return actual_value == target_value and type(actual_value) is type(target_value)
     elif operator == "NOT_EQUALS":
         return actual_value != target_value
     elif operator == "LESS_THAN":

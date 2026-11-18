@@ -108,6 +108,9 @@ export default function PolicyAdmin() {
         });
       await updatePolicyParameters(selectedVersion.version_id, params, 'Policy Admin');
       await loadData();
+      if (selectedVersion?.version_id) {
+        await handleSelectVersion(selectedVersion.version_id);
+      }
       alert('Parameters updated and synced to decision rules.');
     } catch (err) {
       alert(err.message);

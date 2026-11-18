@@ -291,6 +291,32 @@ def approve_requirement(
         previous_supplier_id=req.supplier_id,
         new_supplier_id=req.supplier_id
     )
+    # Bug Fix: Create PO in DB when approving a PO decision (was only logged, never persisted)
+    if req.decision == "PO" and req.po_id and req.supplier_id:
+        from app.db.models import POHeader, POLine
+        existing_po = db.query(POHeader).filter(POHeader.po_id == req.po_id).first()
+        if not existing_po:
+            po_header = POHeader(
+                po_id=req.po_id,
+                run_id=req.run_id,
+                supplier_id=req.supplier_id,
+                plant=req.plant,
+                route=req.route,
+                created_at=datetime.now()
+            )
+            db.add(po_header)
+            db.flush()
+            po_line = POLine(
+                po_id=req.po_id,
+                requirement_id=requirement_id,
+                item_code=req.resolved_item_code,
+                quantity=req.total_quantity,
+                uom=req.uom,
+                unit_price=req.unit_price,
+                line_value_inr=req.group_value_inr
+            )
+            db.add(po_line)
+
     db.add(buyer_action)
 
     audit = AuditLog(
@@ -332,6 +358,15 @@ def override_requirement(
     req = db.query(Requirement).filter(Requirement.requirement_id == requirement_id).first()
     if not req:
         raise HTTPException(status_code=404, detail=f"Requirement '{requirement_id}' not found.")
+
+    # Bug Fix: validate that new_decision matches new_route
+    if payload.new_route and payload.new_decision:
+        po_routes = {"CONTRACT_PO", "SPOT_PO", "EMERGENCY_PO"}
+        sourcing_routes = {"RFQ", "RFP", "CAPEX_SOURCING", "NEW_ITEM_SOURCING"}
+        if payload.new_route in po_routes and payload.new_decision != "PO":
+            raise HTTPException(status_code=400, detail=f"Route {payload.new_route} requires decision 'PO', got '{payload.new_decision}'.")
+        if payload.new_route in sourcing_routes and payload.new_decision != "SOURCING_REQUEST":
+            raise HTTPException(status_code=400, detail=f"Route {payload.new_route} requires decision 'SOURCING_REQUEST', got '{payload.new_decision}'.")
 
     prev_route = req.route
     prev_supplier_id = req.supplier_id

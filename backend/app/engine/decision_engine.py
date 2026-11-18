@@ -49,6 +49,23 @@ class PolicyDecisionEngine:
             "reason": str
         }
         """
+        # Evaluate global constraints (Clause 5.7): Blocked/Inactive suppliers must never receive PO or be suggested
+        for gc in self.global_constraints:
+            gc_cond = gc.get("condition", {})
+            # For contract PO path, check the winning contract supplier
+            if winning_contract_id and gc_cond:
+                gc_context = {
+                    "supplier": {
+                        "status": active_suppliers.get(
+                            ceiling_ledger.contracts[winning_contract_id].supplier_id, {}
+                        ).get("status", "Unknown") if winning_contract_id in ceiling_ledger.contracts else "Unknown"
+                    }
+                }
+                if not evaluate_condition(gc_cond, gc_context):
+                    # Constraint violated - do not use this contract
+                    winning_contract_id = None
+                    contract_rate = None
+
         # Clause 1.2: Check if NEW item
         if group.is_new_item or group.resolved_item_code == "NEW":
             return {
