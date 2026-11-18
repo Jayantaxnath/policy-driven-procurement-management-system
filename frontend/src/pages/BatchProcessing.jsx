@@ -259,7 +259,7 @@ export default function BatchProcessing() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 font-mono">
-                {filteredDecisions.slice(0, 100).map((row, idx) => (
+                {((filteredDecisions || []).slice(0, 100)).map((row, idx) => (
                   <tr key={idx} className="hover:bg-slate-50 transition-colors">
                     <td className="px-4 py-2.5 text-slate-800 font-medium">
                       {row.pr_no}/{row.pr_line}

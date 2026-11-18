@@ -48,13 +48,14 @@ export async function fetchRequirements({ runId, plant, route, decision, search,
   params.append('offset', offset);
 
   const res = await fetch(`${BASE_URL}/requirements?${params.toString()}`);
-  return res.json();
+  const data = await res.json();
+  return { total: data?.total || 0, requirements: data?.requirements || [] };
 }
 
 export async function fetchRequirementDetail(id) {
   const res = await fetch(`${BASE_URL}/requirements/${id}`);
   if (!res.ok) throw new Error('Requirement not found');
-  return res.json();
+  return res.json() || {};
 }
 
 export async function approveRequirement(id, buyerId, notes = '') {
@@ -91,7 +92,7 @@ export async function overrideRequirement(id, { buyerId, overrideReason, newRout
 
 export async function fetchBuyerActions() {
   const res = await fetch(`${BASE_URL}/buyers/actions`);
-  return res.json();
+  return res.json() || [];
 }
 
 // Policy
@@ -102,12 +103,12 @@ export async function fetchActivePolicy() {
 
 export async function fetchPolicyVersions() {
   const res = await fetch(`${BASE_URL}/policy/versions`);
-  return res.json();
+  return res.json() || [];
 }
 
 export async function fetchPolicyVersionDetail(versionId) {
   const res = await fetch(`${BASE_URL}/policy/${versionId}`);
-  return res.json();
+  return res.json() || {};
 }
 
 export async function uploadPolicyAmendment(payload) {
