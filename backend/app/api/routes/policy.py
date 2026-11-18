@@ -415,6 +415,7 @@ def upload_policy_amendment(
         created_by=payload.created_by
     )
     db.add(draft_version)
+    db.flush()  # Flush draft_version so version_id exists in policy_versions before approval references it
 
     approval = PolicyApproval(
         version_id=payload.version_id,
