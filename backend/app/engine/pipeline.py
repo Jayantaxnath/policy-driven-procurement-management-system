@@ -266,6 +266,16 @@ def process_pr_batch(
         po_eligible_reqs, 
         max_window_hours=state["policy_def"].get("parameters", {}).get("po_consolidation_window_hours", 24)
     )
+
+    # Persist contract ceiling consumption to DB (Bug Fix: consumed_value was never written back)
+    from app.db.models import ContractHeader
+    for event in ceiling_ledger.consumption_events:
+        contract = session.query(ContractHeader).filter(
+            ContractHeader.contract_id == event["contract_id"]
+        ).first()
+        if contract:
+            contract.consumed_value = ceiling_ledger.contracts[event["contract_id"]].current_consumed
+    session.commit()
     
     # Generate final per-PR-line output table
     final_output_rows = []

@@ -20,7 +20,9 @@ class RequirementGroup:
         self.uom: str = first_line.get("uom", "NOS")
         self.lines: List[Dict[str, Any]] = [first_line]
         self.total_quantity: float = float(first_line["quantity"])
-        self.urgency: str = "Emergency" if str(first_line.get("urgency", "")).lower() == "emergency" else "Normal"
+        # Bug Fix: preserve "Urgent" instead of downgrading to "Normal"
+        first_urgency = str(first_line.get("urgency", "Normal")).strip()
+        self.urgency: str = first_urgency if first_urgency else "Normal"
 
     def can_join(self, line: Dict[str, Any], max_creation_days: int = 14, max_need_by_days: int = 7) -> bool:
         # Clause 1.2: New items are never clubbed
@@ -50,9 +52,13 @@ class RequirementGroup:
     def add_line(self, line: Dict[str, Any]):
         self.lines.append(line)
         self.total_quantity += float(line["quantity"])
-        # Clause 2.3: If any line in the requirement is marked Emergency, requirement is an emergency
-        if str(line.get("urgency", "")).lower() == "emergency":
+        # Clause 2.3: If any line is Emergency, requirement becomes Emergency.
+        # Preserve Urgent over Normal (Bug Fix: was only checking for Emergency).
+        line_urgency = str(line.get("urgency", "Normal")).strip()
+        if line_urgency.lower() == "emergency":
             self.urgency = "Emergency"
+        elif line_urgency.lower() == "urgent" and self.urgency.lower() not in ("emergency",):
+            self.urgency = "Urgent"
 
 
 def club_pr_lines(

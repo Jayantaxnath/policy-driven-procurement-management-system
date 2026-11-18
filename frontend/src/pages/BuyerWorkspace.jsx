@@ -304,7 +304,7 @@ export default function BuyerWorkspace() {
                         </td>
                         <td className="px-4 py-2.5 text-slate-700">{req.route}</td>
                         <td className="px-4 py-2.5 text-right font-bold text-slate-900 tabular-nums">
-                          {req.group_value_inr ? `₹${req.group_value_inr.toLocaleString('en-IN')}` : '-'}
+                          {req.group_value_inr != null ? `₹${req.group_value_inr.toLocaleString('en-IN')}` : '-'}
                         </td>
                         <td className="px-4 py-2.5 font-sans">
                           <span
@@ -378,13 +378,13 @@ export default function BuyerWorkspace() {
                   <div>
                     <span className="text-slate-400 block text-[10px]">VALUATION</span>
                     <span className="font-bold text-emerald-600">
-                      ₹{selectedReq.group_value_inr ? selectedReq.group_value_inr.toLocaleString('en-IN') : '0.00'}
+                      ₹{selectedReq.group_value_inr != null ? selectedReq.group_value_inr.toLocaleString('en-IN') : '0.00'}
                     </span>
                   </div>
                   <div>
                     <span className="text-slate-400 block text-[10px]">UNIT PRICE</span>
                     <span className="font-semibold text-slate-700">
-                      ₹{selectedReq.unit_price ? selectedReq.unit_price.toFixed(2) : 'TBD'}
+                      ₹{selectedReq.unit_price != null ? selectedReq.unit_price.toFixed(2) : 'TBD'}
                     </span>
                   </div>
                   <div>

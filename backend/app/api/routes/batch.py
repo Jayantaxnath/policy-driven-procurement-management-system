@@ -103,7 +103,7 @@ def process_batch_endpoint(
                 description=str(r.get("description", "")),
                 quantity=float(r.get("quantity", 0) or 0),
                 uom=str(r.get("uom", "NOS")).strip(),
-                estimated_unit_price=float(r.get("estimated_unit_price", 0) or 0) if pd.notna(r.get("estimated_unit_price")) else None,
+                estimated_unit_price=float(r.get("estimated_unit_price")) if pd.notna(r.get("estimated_unit_price")) and float(r.get("estimated_unit_price", 0) or 0) > 0 else None,
                 need_by_date=n_date,
                 urgency=str(r.get("urgency", "Normal")),
                 ingestion_status="PROCESSED"
@@ -132,8 +132,24 @@ def process_batch_endpoint(
         first_d = gdata["decision"]
         is_new = (first_d.get("resolved_item_code") == "NEW")
         
-        # Calculate requirement date from first line if available
+        # Calculate requirement date from first line if available (Bug Fix: was always date.today())
         req_date = date.today()
+        first_line = gdata["lines"][0] if gdata["lines"] else None
+        if first_line:
+            # Use need_by_date if available, else fall back to created_at date
+            if first_line.get("need_by_date"):
+                try:
+                    req_date = datetime.strptime(str(first_line["need_by_date"]), "%Y-%m-%d").date()
+                except (ValueError, TypeError):
+                    pass
+            elif first_line.get("created_at"):
+                try:
+                    if isinstance(first_line["created_at"], str):
+                        req_date = datetime.strptime(first_line["created_at"].strip(), "%Y-%m-%d %H:%M").date()
+                    elif isinstance(first_line["created_at"], datetime):
+                        req_date = first_line["created_at"].date()
+                except (ValueError, TypeError):
+                    pass
 
         req_obj = Requirement(
             requirement_id=scoped_gid,

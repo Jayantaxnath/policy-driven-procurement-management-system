@@ -293,10 +293,10 @@ export default function BatchProcessing() {
                       {row.supplier_id || (row.suggested_supplier_ids ? `Sug: ${row.suggested_supplier_ids}` : '-')}
                     </td>
                     <td className="px-4 py-2.5 text-right text-slate-700 tabular-nums">
-                      {row.unit_price ? row.unit_price.toFixed(2) : '-'}
+                      {row.unit_price != null ? row.unit_price.toFixed(2) : '-'}
                     </td>
                     <td className="px-4 py-2.5 text-right font-bold text-slate-900 tabular-nums">
-                      {row.group_value_inr ? row.group_value_inr.toLocaleString('en-IN', { minimumFractionDigits: 2 }) : '0.00'}
+                      {row.group_value_inr != null ? row.group_value_inr.toLocaleString('en-IN', { minimumFractionDigits: 2 }) : '0.00'}
                     </td>
                     <td className="px-4 py-2.5 text-slate-600 font-sans text-[11px] max-w-xs truncate" title={row.reason}>
                       {row.reason}
