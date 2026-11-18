@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, CheckCircle, AlertOctagon, Search, Filter, History, Eye, Check, X, Building, ArrowUpRight } from 'lucide-react';
+import { Briefcase, CheckCircle, AlertOctagon, Search, Filter, History, Eye, Check, X, Building, ArrowUpRight, RefreshCw } from 'lucide-react';
 import { fetchRequirements, fetchRequirementDetail, approveRequirement, overrideRequirement, fetchBuyerActions } from '../api';
 
 export default function BuyerWorkspace() {
@@ -142,16 +142,20 @@ export default function BuyerWorkspace() {
             Requirements ({total})
           </button>
           <button
-            onClick={() => {
-              setActiveTab('audit');
-              loadAudit();
-            }}
+            onClick={() => setActiveTab('audit')}
             className={`px-3 py-1.5 text-xs font-semibold rounded-lg flex items-center space-x-1.5 transition-colors ${
               activeTab === 'audit' ? 'bg-sky-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
             <History className="w-3.5 h-3.5" />
             <span>Audit Trail</span>
+          </button>
+          <button
+            onClick={loadRequirements}
+            className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors flex items-center space-x-1"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            <span>Refresh</span>
           </button>
         </div>
       </div>
