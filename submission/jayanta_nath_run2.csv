@@ -1,0 +1,191 @@
+pr_no,pr_line,resolved_item_code,group_id,po_id,decision,route,supplier_id,unit_price,group_value_inr,suggested_supplier_ids,policy_version,reason
+PR-26-00534,1,ITM-1009,f3a1cff9-REQ-0003,PO-0001,PO,SPOT_PO,S006,7.39,182089.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00501,1,ITM-1009,f3a1cff9-REQ-0003,PO-0001,PO,SPOT_PO,S006,7.39,182089.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00532,1,ITM-1009,f3a1cff9-REQ-0003,PO-0001,PO,SPOT_PO,S006,7.39,182089.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00658,1,ITM-1009,f3a1cff9-REQ-0003,PO-0001,PO,SPOT_PO,S006,7.39,182089.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00502,1,ITM-1021,f3a1cff9-REQ-0139,PO-0070,PO,SPOT_PO,S013,201.52,74562.40,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S013 at reference price.
+PR-26-00503,1,ITM-1052,f3a1cff9-REQ-0134,PO-0068,PO,SPOT_PO,S032,32069.30,96207.90,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S032 at reference price.
+PR-26-00504,1,ITM-1024,f3a1cff9-REQ-0104,PO-0054,PO,CONTRACT_PO,S013,311.24,12449.60,,v5.1,Contract RC-2026-002 with Industrial Bearings Co valid with sufficient ceiling.
+PR-26-00505,1,ITM-1007,f3a1cff9-REQ-0096,,SOURCING_REQUEST,RFQ,,,301267.10,S001;S003;S002,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00506,1,ITM-1049,f3a1cff9-REQ-0045,PO-0028,PO,CONTRACT_PO,S029,191.31,145395.60,,v5.1,Contract RC-2026-007 with SafeGuard Industrial Supplies valid with sufficient ceiling.
+PR-26-00507,1,ITM-1001,f3a1cff9-REQ-0153,PO-0074,PO,CONTRACT_PO,S001,6340.39,31701.95,,v5.1,Contract RC-2025-011 with Bhosari Steel Traders valid with sufficient ceiling.
+PR-26-00655,1,ITM-1047,f3a1cff9-REQ-0097,,SOURCING_REQUEST,RFQ,,,300035.00,S029;S030,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 2 suppliers.
+PR-26-00508,1,ITM-1047,f3a1cff9-REQ-0097,,SOURCING_REQUEST,RFQ,,,300035.00,S029;S030,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 2 suppliers.
+PR-26-00509,1,ITM-1019,f3a1cff9-REQ-0054,PO-0033,PO,CONTRACT_PO,S009,39.28,14533.60,,v5.1,Contract RC-2025-014 with Weldtech Supplies valid with sufficient ceiling.
+PR-26-00510,1,ITM-1002,f3a1cff9-REQ-0023,PO-0014,PO,CONTRACT_PO,S001,9168.71,110024.52,,v5.1,Contract RC-2025-011 with Bhosari Steel Traders valid with sufficient ceiling.
+PR-26-00511,1,ITM-1048,f3a1cff9-REQ-0137,PO-0069,PO,SPOT_PO,S029,94.00,78020.00,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00512,1,ITM-1015,f3a1cff9-REQ-0021,PO-0012,PO,CONTRACT_PO,S009,158.51,163265.30,,v5.1,Contract RC-2025-014 with Weldtech Supplies valid with sufficient ceiling.
+PR-26-00659,1,ITM-1010,f3a1cff9-REQ-0004,,SOURCING_REQUEST,RFQ,,,276911.90,S007;S006,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 2 suppliers.
+PR-26-00513,1,ITM-1010,f3a1cff9-REQ-0004,,SOURCING_REQUEST,RFQ,,,276911.90,S007;S006,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 2 suppliers.
+PR-26-00514,1,ITM-1023,f3a1cff9-REQ-0033,PO-0019,PO,SPOT_PO,S014,1500.01,195001.30,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S014 at reference price.
+PR-26-00515,1,ITM-1022,f3a1cff9-REQ-0135,PO-0067,PO,SPOT_PO,S014,640.23,25609.20,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S014 at reference price.
+PR-26-00516,1,ITM-1053,f3a1cff9-REQ-0056,,SOURCING_REQUEST,RFQ,,,212259.50,S032;S033,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 2 suppliers.
+PR-26-00517,1,ITM-1061,f3a1cff9-REQ-0037,PO-0022,PO,CONTRACT_PO,S038,178463.60,356927.20,,v5.1,Contract RC-2026-012 with Sparkle Facility Services valid with sufficient ceiling.
+PR-26-00518,1,ITM-1006,f3a1cff9-REQ-0044,,SOURCING_REQUEST,RFQ,,,284700.00,S003;S001;S002,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00519,1,ITM-1041,f3a1cff9-REQ-0081,PO-0044,PO,CONTRACT_PO,S025,71.50,253825.00,,v5.1,Contract RC-2026-009 with Kaveri Corrugators valid with sufficient ceiling.
+PR-26-00520,1,ITM-1016,f3a1cff9-REQ-0027,PO-0012,PO,CONTRACT_PO,S009,115.26,149838.00,,v5.1,Contract RC-2025-014 with Weldtech Supplies valid with sufficient ceiling.
+PR-26-00521,1,ITM-1046,f3a1cff9-REQ-0090,PO-0049,PO,CONTRACT_PO,S029,1091.63,251074.90,,v5.1,Contract RC-2026-007 with SafeGuard Industrial Supplies valid with sufficient ceiling.
+PR-26-00654,1,ITM-1046,f3a1cff9-REQ-0090,PO-0049,PO,CONTRACT_PO,S029,1091.63,251074.90,,v5.1,Contract RC-2026-007 with SafeGuard Industrial Supplies valid with sufficient ceiling.
+PR-26-00522,1,ITM-1013,f3a1cff9-REQ-0070,PO-0039,PO,SPOT_PO,S007,37.74,72083.40,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S007 at reference price.
+PR-26-00523,1,ITM-1003,f3a1cff9-REQ-0015,PO-0008,PO,CONTRACT_PO,S001,83.69,266971.10,,v5.1,Contract RC-2025-011 with Bhosari Steel Traders valid with sufficient ceiling.
+PR-26-00524,1,ITM-1014,f3a1cff9-REQ-0061,,SOURCING_REQUEST,RFQ,,,231580.80,S006;S007,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 2 suppliers.
+PR-26-00525,1,ITM-1022,f3a1cff9-REQ-0006,PO-0002,PO,SPOT_PO,S014,640.23,70425.30,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S014 at reference price.
+PR-26-00526,1,ITM-1023,f3a1cff9-REQ-0152,PO-0073,PO,SPOT_PO,S014,1500.01,75000.50,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S014 at reference price.
+PR-26-00527,1,ITM-1023,f3a1cff9-REQ-0038,PO-0023,PO,SPOT_PO,S014,1500.01,105000.70,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S014 at reference price.
+PR-26-00528,1,ITM-1022,f3a1cff9-REQ-0103,PO-0053,PO,SPOT_PO,S014,640.23,121643.70,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S014 at reference price.
+PR-26-00530,1,ITM-1022,f3a1cff9-REQ-0103,PO-0053,PO,SPOT_PO,S014,640.23,121643.70,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S014 at reference price.
+PR-26-00529,1,ITM-1022,f3a1cff9-REQ-0117,PO-0060,PO,SPOT_PO,S014,640.23,140850.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S014 at reference price.
+PR-26-00531,1,ITM-1009,f3a1cff9-REQ-0080,PO-0043,PO,SPOT_PO,S006,7.39,20544.20,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00533,1,ITM-1009,f3a1cff9-REQ-0013,PO-0007,PO,SPOT_PO,S006,7.39,23130.70,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00535,1,ITM-1009,f3a1cff9-REQ-0120,PO-0061,PO,SPOT_PO,S006,7.39,19287.90,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00536,1,ITM-1057,f3a1cff9-REQ-0009,PO-0004,PO,CONTRACT_PO,S035,10689.51,320685.30,,v5.1,Contract RC-2026-033 with Infoline Systems valid with sufficient ceiling.
+PR-26-00537,1,ITM-1036,f3a1cff9-REQ-0053,PO-0032,PO,CONTRACT_PO,S021,3537.76,70755.20,,v5.1,Contract RC-2026-031 with Pneumatic Point valid with sufficient ceiling.
+PR-26-00538,1,ITM-1039,f3a1cff9-REQ-0012,PO-0006,PO,CONTRACT_PO,S021,2746.87,164812.20,,v5.1,Contract RC-2026-031 with Pneumatic Point valid with sufficient ceiling.
+PR-26-00539,1,ITM-1056,f3a1cff9-REQ-0110,PO-0057,PO,CONTRACT_PO,S035,64654.36,193963.08,,v5.1,Contract RC-2026-033 with Infoline Systems valid with sufficient ceiling.
+PR-26-00540,1,ITM-1037,f3a1cff9-REQ-0049,PO-0030,PO,CONTRACT_PO,S021,2439.01,195120.80,,v5.1,Contract RC-2026-031 with Pneumatic Point valid with sufficient ceiling.
+PR-26-00541,1,ITM-1056,f3a1cff9-REQ-0062,PO-0036,PO,CONTRACT_PO,S035,64654.36,129308.72,,v5.1,Contract RC-2026-033 with Infoline Systems valid with sufficient ceiling.
+PR-26-00542,1,ITM-1057,f3a1cff9-REQ-0112,PO-0059,PO,CONTRACT_PO,S035,10689.51,85516.08,,v5.1,Contract RC-2026-033 with Infoline Systems valid with sufficient ceiling.
+PR-26-00543,1,ITM-1036,f3a1cff9-REQ-0089,PO-0048,PO,CONTRACT_PO,S021,3537.76,60141.92,,v5.1,Contract RC-2026-031 with Pneumatic Point valid with sufficient ceiling.
+PR-26-00544,1,ITM-1037,f3a1cff9-REQ-0016,PO-0009,PO,CONTRACT_PO,S021,2439.01,219510.90,,v5.1,Contract RC-2026-031 with Pneumatic Point valid with sufficient ceiling.
+PR-26-00545,1,ITM-1039,f3a1cff9-REQ-0128,PO-0065,PO,CONTRACT_PO,S021,2746.87,137343.50,,v5.1,Contract RC-2026-031 with Pneumatic Point valid with sufficient ceiling.
+PR-26-00546,1,ITM-1073,f3a1cff9-REQ-0072,,SOURCING_REQUEST,CAPEX_SOURCING,,,2300000.00,S045;S047;S020;S048;S046,v5.1,Capex equipment procurement requires sourcing event and Capex approval. 5 suppliers suggested.
+PR-26-00547,1,ITM-1072,f3a1cff9-REQ-0143,,SOURCING_REQUEST,CAPEX_SOURCING,,,2738200.86,S045;S047;S020;S048;S046,v5.1,Capex equipment procurement requires sourcing event and Capex approval. 5 suppliers suggested.
+PR-26-00664,1,ITM-1071,f3a1cff9-REQ-0032,,SOURCING_REQUEST,CAPEX_SOURCING,,,4527528.06,S045;S047;S020;S048;S046,v5.1,Capex equipment procurement requires sourcing event and Capex approval. 5 suppliers suggested.
+PR-26-00548,1,ITM-1071,f3a1cff9-REQ-0032,,SOURCING_REQUEST,CAPEX_SOURCING,,,4527528.06,S045;S047;S020;S048;S046,v5.1,Capex equipment procurement requires sourcing event and Capex approval. 5 suppliers suggested.
+PR-26-00549,1,ITM-1073,f3a1cff9-REQ-0042,,SOURCING_REQUEST,CAPEX_SOURCING,,,4600000.00,S045;S047;S020;S048;S046,v5.1,Capex equipment procurement requires sourcing event and Capex approval. 5 suppliers suggested.
+PR-26-00550,1,ITM-1060,f3a1cff9-REQ-0119,,SOURCING_REQUEST,RFQ,,,145000.00,S036;S035;S037,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00551,1,ITM-1032,f3a1cff9-REQ-0107,,SOURCING_REQUEST,RFQ,,,47000.00,S019;S020;S017,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00552,1,ITM-1055,f3a1cff9-REQ-0002,,SOURCING_REQUEST,RFQ,,,13800.00,S033;S032,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 2 suppliers.
+PR-26-00553,1,ITM-1032,f3a1cff9-REQ-0113,,SOURCING_REQUEST,,,,258500.00,S019;S020;S017,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00666,1,ITM-1032,f3a1cff9-REQ-0113,,SOURCING_REQUEST,,,,258500.00,S019;S020;S017,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00662,1,ITM-1060,f3a1cff9-REQ-0141,,SOURCING_REQUEST,RFQ,,,174000.00,S036;S035;S037,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00554,1,ITM-1060,f3a1cff9-REQ-0141,,SOURCING_REQUEST,RFQ,,,174000.00,S036;S035;S037,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00555,1,ITM-1042,f3a1cff9-REQ-0129,PO-0066,PO,EMERGENCY_PO,S026,1159.02,405657.00,,v5.1,Emergency requisition within limit; awarded to 1st preferred supplier S026 at reference price.
+PR-26-00556,1,ITM-1004,f3a1cff9-REQ-0064,PO-0037,PO,EMERGENCY_PO,S003,23773.75,380380.00,,v5.1,Emergency requisition within limit; awarded to 1st preferred supplier S003 at reference price.
+PR-26-00652,1,ITM-1004,f3a1cff9-REQ-0064,PO-0037,PO,EMERGENCY_PO,S003,23773.75,380380.00,,v5.1,Emergency requisition within limit; awarded to 1st preferred supplier S003 at reference price.
+PR-26-00557,1,ITM-1043,f3a1cff9-REQ-0007,PO-0003,PO,EMERGENCY_PO,S026,175.90,344764.00,,v5.1,Emergency requisition within limit; awarded to 1st preferred supplier S026 at reference price.
+PR-26-00558,1,ITM-1031,f3a1cff9-REQ-0014,,SOURCING_REQUEST,,,,161992.80,S019;S017;S018,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00639,1,ITM-1051,f3a1cff9-REQ-0034,PO-0020,PO,EMERGENCY_PO,S029,8.76,279882.00,,v5.1,Emergency requisition within limit; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00640,1,ITM-1051,f3a1cff9-REQ-0034,PO-0020,PO,EMERGENCY_PO,S029,8.76,279882.00,,v5.1,Emergency requisition within limit; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00638,1,ITM-1051,f3a1cff9-REQ-0034,PO-0020,PO,EMERGENCY_PO,S029,8.76,279882.00,,v5.1,Emergency requisition within limit; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00559,1,ITM-1051,f3a1cff9-REQ-0034,PO-0020,PO,EMERGENCY_PO,S029,8.76,279882.00,,v5.1,Emergency requisition within limit; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00560,1,ITM-1033,f3a1cff9-REQ-0010,,SOURCING_REQUEST,,,,131675.78,S020;S019;S017,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00561,1,ITM-1027,f3a1cff9-REQ-0125,PO-0063,PO,SPOT_PO,S013,259.35,10374.00,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S013 at reference price.
+PR-26-00562,1,ITM-1050,f3a1cff9-REQ-0035,PO-0021,PO,SPOT_PO,S029,130.83,85039.50,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00563,1,ITM-1012,f3a1cff9-REQ-0028,PO-0016,PO,SPOT_PO,S006,0.77,104935.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00564,1,ITM-1038,f3a1cff9-REQ-0102,PO-0052,PO,SPOT_PO,S024,166.41,69892.20,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S024 at reference price.
+PR-26-00565,1,ITM-1058,f3a1cff9-REQ-0082,PO-0045,PO,SPOT_PO,S036,257.79,157251.90,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S036 at reference price.
+PR-26-00584,1,ITM-1045,f3a1cff9-REQ-0063,,SOURCING_REQUEST,RFQ,,,236725.92,S028;S027;S026,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00566,1,ITM-1045,f3a1cff9-REQ-0063,,SOURCING_REQUEST,RFQ,,,236725.92,S028;S027;S026,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00567,1,ITM-1059,f3a1cff9-REQ-0057,PO-0034,PO,SPOT_PO,S035,2999.66,41995.24,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S035 at reference price.
+PR-26-00568,1,ITM-1026,f3a1cff9-REQ-0132,PO-0067,PO,SPOT_PO,S014,106.38,168080.40,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S014 at reference price.
+PR-26-00569,1,ITM-1034,f3a1cff9-REQ-0036,,SOURCING_REQUEST,,,,165662.40,S020;S019;S017,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00570,1,ITM-1017,f3a1cff9-REQ-0039,PO-0024,PO,SPOT_PO,S012,1614.13,100076.06,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S012 at reference price.
+PR-26-00571,1,ITM-1018,f3a1cff9-REQ-0086,PO-0047,PO,SPOT_PO,S009,1186.78,119864.78,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S009 at reference price.
+PR-26-00572,1,ITM-1030,f3a1cff9-REQ-0111,PO-0058,PO,SPOT_PO,S017,1149.88,14948.44,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S017 at reference price.
+PR-26-00573,1,ITM-1029,f3a1cff9-REQ-0052,,SOURCING_REQUEST,,,,222591.60,S020;S017;S019,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00676,1,ITM-1029,f3a1cff9-REQ-0052,,SOURCING_REQUEST,,,,222591.60,S020;S017;S019,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00677,1,ITM-1029,f3a1cff9-REQ-0052,,SOURCING_REQUEST,,,,222591.60,S020;S017;S019,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00574,1,ITM-1054,f3a1cff9-REQ-0041,PO-0026,PO,SPOT_PO,S032,191.61,53650.80,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S032 at reference price.
+PR-26-00575,1,ITM-1035,f3a1cff9-REQ-0145,PO-0071,PO,SPOT_PO,S023,391.82,94036.80,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S023 at reference price.
+PR-26-00586,1,ITM-1020,f3a1cff9-REQ-0126,PO-0064,PO,SPOT_PO,S009,210.17,31525.50,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S009 at reference price.
+PR-26-00576,1,ITM-1020,f3a1cff9-REQ-0126,PO-0064,PO,SPOT_PO,S009,210.17,31525.50,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S009 at reference price.
+PR-26-00577,1,ITM-1005,f3a1cff9-REQ-0043,PO-0027,PO,SPOT_PO,S003,74.34,75826.80,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S003 at reference price.
+PR-26-00578,1,ITM-1044,f3a1cff9-REQ-0051,PO-0031,PO,SPOT_PO,S027,21.59,51168.30,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S027 at reference price.
+PR-26-00579,1,ITM-1008,f3a1cff9-REQ-0046,PO-0029,PO,SPOT_PO,S001,86.04,133362.00,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S001 at reference price.
+PR-26-00620,1,ITM-1028,f3a1cff9-REQ-0030,,SOURCING_REQUEST,,,,448628.40,S019;S017;S020,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00580,1,ITM-1028,f3a1cff9-REQ-0030,,SOURCING_REQUEST,,,,448628.40,S019;S017;S020,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00581,1,ITM-1040,f3a1cff9-REQ-0122,PO-0062,PO,SPOT_PO,S023,19152.28,19152.28,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S023 at reference price.
+PR-26-00582,1,ITM-1033,f3a1cff9-REQ-0136,,SOURCING_REQUEST,,,,65837.89,S020;S019;S017,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00583,1,ITM-1054,f3a1cff9-REQ-0140,PO-0068,PO,SPOT_PO,S032,191.61,153288.00,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S032 at reference price.
+PR-26-00585,1,ITM-1050,f3a1cff9-REQ-0048,PO-0025,PO,SPOT_PO,S029,130.83,170079.00,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00587,1,ITM-1038,f3a1cff9-REQ-0029,PO-0017,PO,SPOT_PO,S024,166.41,14976.90,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S024 at reference price.
+PR-26-00588,1,ITM-1058,f3a1cff9-REQ-0017,PO-0010,PO,SPOT_PO,S036,257.79,107756.22,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S036 at reference price.
+PR-26-00589,1,ITM-1066,f3a1cff9-REQ-0005,,SOURCING_REQUEST,RFP,,,807749.16,S043;S044;S042,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 3 suppliers.
+PR-26-00667,1,ITM-1066,f3a1cff9-REQ-0005,,SOURCING_REQUEST,RFP,,,807749.16,S043;S044;S042,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 3 suppliers.
+PR-26-00590,1,ITM-1068,f3a1cff9-REQ-0133,,SOURCING_REQUEST,RFQ,,,415042.59,S043;S042;S044,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00591,1,ITM-1044,f3a1cff9-REQ-0098,,SOURCING_REQUEST,RFQ,,,556237.50,S027;S028;S026,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00592,1,ITM-1031,f3a1cff9-REQ-0026,,SOURCING_REQUEST,,,,206990.80,S019;S017;S018,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00593,1,ITM-1028,f3a1cff9-REQ-0024,,SOURCING_REQUEST,,,,795295.80,S019;S017;S020,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00594,1,ITM-1034,f3a1cff9-REQ-0059,,SOURCING_REQUEST,,,,496987.20,S020;S019;S017,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00595,1,ITM-1061,f3a1cff9-REQ-0078,,SOURCING_REQUEST,RFQ,,,535390.80,S038;S039;S040,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00596,1,ITM-1029,f3a1cff9-REQ-0099,,SOURCING_REQUEST,,,,476982.00,S020;S017;S019,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00597,1,ITM-1030,f3a1cff9-REQ-0092,,SOURCING_REQUEST,,,,218477.20,S017;S019;S018,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00609,1,ITM-1043,f3a1cff9-REQ-0047,,SOURCING_REQUEST,RFQ,,,580470.00,S026;S027;S028,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00598,1,ITM-1043,f3a1cff9-REQ-0047,,SOURCING_REQUEST,RFQ,,,580470.00,S026;S027;S028,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00599,1,ITM-1004,f3a1cff9-REQ-0149,,SOURCING_REQUEST,RFP,,,1664162.50,S003;S002;S001;S005,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 4 suppliers.
+PR-26-00600,1,ITM-1040,f3a1cff9-REQ-0144,,SOURCING_REQUEST,RFP,,,2451491.84,S023;S024;S022;S021,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 4 suppliers.
+PR-26-00601,1,ITM-1059,f3a1cff9-REQ-0068,,SOURCING_REQUEST,RFP,,,2321736.84,S035;S036;S037,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 3 suppliers.
+PR-26-00645,1,ITM-1059,f3a1cff9-REQ-0068,,SOURCING_REQUEST,RFP,,,2321736.84,S035;S036;S037,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 3 suppliers.
+PR-26-00602,1,ITM-1035,f3a1cff9-REQ-0106,,SOURCING_REQUEST,RFP,,,1430143.00,S023;S024;S022;S021,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 4 suppliers.
+PR-26-00603,1,ITM-1042,f3a1cff9-REQ-0084,,SOURCING_REQUEST,RFQ,,,179952.00,S026;S028;S025,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00604,1,ITM-1042,f3a1cff9-REQ-0093,,SOURCING_REQUEST,RFQ,,,179952.00,S026;S028;S025,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00605,1,ITM-1045,f3a1cff9-REQ-0088,,SOURCING_REQUEST,RFQ,,,131090.16,S028;S027;S026,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00606,1,ITM-1044,f3a1cff9-REQ-0094,,SOURCING_REQUEST,RFQ,,,148965.70,S027;S028;S026,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00607,1,ITM-1043,f3a1cff9-REQ-0124,,SOURCING_REQUEST,RFQ,,,193490.00,S026;S027;S028,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00608,1,ITM-1045,f3a1cff9-REQ-0138,,SOURCING_REQUEST,RFQ,,,123453.84,S028;S027;S026,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00610,1,ITM-1044,f3a1cff9-REQ-0087,,SOURCING_REQUEST,RFQ,,,151508.50,S027;S028;S026,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00611,1,ITM-1029,f3a1cff9-REQ-0130,,SOURCING_REQUEST,,,,127195.20,S020;S017;S019,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00612,1,ITM-1031,f3a1cff9-REQ-0101,,SOURCING_REQUEST,,,,98995.60,S019;S017;S018,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00613,1,ITM-1030,f3a1cff9-REQ-0095,,SOURCING_REQUEST,,,,80491.60,S017;S019;S018,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00614,1,ITM-1033,f3a1cff9-REQ-0121,,SOURCING_REQUEST,,,,131675.78,S020;S019;S017,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00615,1,ITM-1034,f3a1cff9-REQ-0074,,SOURCING_REQUEST,,,,82831.20,S020;S019;S017,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00616,1,ITM-1028,f3a1cff9-REQ-0077,,SOURCING_REQUEST,,,,163137.60,S019;S017;S020,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00617,1,ITM-1029,f3a1cff9-REQ-0142,,SOURCING_REQUEST,,,,158994.00,S020;S017;S019,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00618,1,ITM-1031,f3a1cff9-REQ-0071,,SOURCING_REQUEST,,,,76496.60,S019;S017;S018,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00619,1,ITM-1030,f3a1cff9-REQ-0001,,SOURCING_REQUEST,,,,206978.40,S017;S019;S018,v5.1,Sourcing request initiated under Clause 5.2A.
+PR-26-00621,1,ITM-1017,f3a1cff9-REQ-0123,,SOURCING_REQUEST,RFP,,,1054026.89,S012;S009;S010,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 3 suppliers.
+PR-26-00622,1,ITM-1018,f3a1cff9-REQ-0118,,SOURCING_REQUEST,RFP,,,804636.84,S009;S012;S010,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 3 suppliers.
+PR-26-00623,1,ITM-1008,f3a1cff9-REQ-0127,,SOURCING_REQUEST,RFP,,,896536.80,S001;S005;S002;S003,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 4 suppliers.
+PR-26-00624,1,ITM-1026,f3a1cff9-REQ-0085,,SOURCING_REQUEST,RFP,,,1063800.00,S014;S013;S015;S016,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 4 suppliers.
+PR-26-00625,1,ITM-1051,f3a1cff9-REQ-0131,,SOURCING_REQUEST,RFP,,,819673.20,S029;S030,v5.1,Formal RFP required for high-value requisition (>= INR 10 Lakh) under Clause 5.6. Suggested 2 suppliers.
+PR-26-00628,1,ITM-1012,f3a1cff9-REQ-0109,PO-0056,PO,SPOT_PO,S006,0.77,133387.10,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00626,1,ITM-1012,f3a1cff9-REQ-0109,PO-0056,PO,SPOT_PO,S006,0.77,133387.10,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00627,1,ITM-1012,f3a1cff9-REQ-0109,PO-0056,PO,SPOT_PO,S006,0.77,133387.10,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00630,1,ITM-1005,f3a1cff9-REQ-0105,PO-0055,PO,SPOT_PO,S003,74.34,150910.20,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S003 at reference price.
+PR-26-00629,1,ITM-1005,f3a1cff9-REQ-0105,PO-0055,PO,SPOT_PO,S003,74.34,150910.20,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S003 at reference price.
+PR-26-00631,1,ITM-1005,f3a1cff9-REQ-0105,PO-0055,PO,SPOT_PO,S003,74.34,150910.20,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S003 at reference price.
+PR-26-00634,1,ITM-1027,f3a1cff9-REQ-0025,PO-0015,PO,SPOT_PO,S015,269.44,150886.40,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S015 at reference price.
+PR-26-00632,1,ITM-1027,f3a1cff9-REQ-0025,PO-0015,PO,SPOT_PO,S015,269.44,150886.40,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S015 at reference price.
+PR-26-00633,1,ITM-1027,f3a1cff9-REQ-0025,PO-0015,PO,SPOT_PO,S015,269.44,150886.40,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S015 at reference price.
+PR-26-00635,1,ITM-1018,f3a1cff9-REQ-0079,PO-0042,PO,SPOT_PO,S009,1186.78,157841.74,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S009 at reference price.
+PR-26-00637,1,ITM-1018,f3a1cff9-REQ-0079,PO-0042,PO,SPOT_PO,S009,1186.78,157841.74,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S009 at reference price.
+PR-26-00636,1,ITM-1018,f3a1cff9-REQ-0079,PO-0042,PO,SPOT_PO,S009,1186.78,157841.74,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S009 at reference price.
+PR-26-00644,1,ITM-1008,f3a1cff9-REQ-0091,PO-0050,PO,SPOT_PO,S001,86.04,171219.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S001 at reference price.
+PR-26-00642,1,ITM-1008,f3a1cff9-REQ-0091,PO-0050,PO,SPOT_PO,S001,86.04,171219.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S001 at reference price.
+PR-26-00641,1,ITM-1008,f3a1cff9-REQ-0091,PO-0050,PO,SPOT_PO,S001,86.04,171219.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S001 at reference price.
+PR-26-00643,1,ITM-1008,f3a1cff9-REQ-0091,PO-0050,PO,SPOT_PO,S001,86.04,171219.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S001 at reference price.
+PR-26-00646,1,ITM-1059,f3a1cff9-REQ-0075,PO-0041,PO,SPOT_PO,S035,2999.66,11998.64,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S035 at reference price.
+PR-26-00647,1,ITM-1059,f3a1cff9-REQ-0083,PO-0046,PO,SPOT_PO,S035,2999.66,14998.30,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S035 at reference price.
+PR-26-00648,1,ITM-1050,f3a1cff9-REQ-0022,PO-0013,PO,SPOT_PO,S029,130.83,18316.20,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00649,1,ITM-1050,f3a1cff9-REQ-0031,PO-0018,PO,SPOT_PO,S029,130.83,15699.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00650,1,ITM-1050,f3a1cff9-REQ-0040,PO-0025,PO,SPOT_PO,S029,130.83,10466.40,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00651,1,ITM-1004,f3a1cff9-REQ-0060,PO-0035,PO,SPOT_PO,S003,23773.75,23773.75,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S003 at reference price.
+PR-26-00653,1,ITM-1004,f3a1cff9-REQ-0073,PO-0040,PO,SPOT_PO,S003,23773.75,23773.75,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S003 at reference price.
+PR-26-00656,1,ITM-1048,f3a1cff9-REQ-0100,PO-0051,PO,SPOT_PO,S029,94.00,15040.00,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S029 at reference price.
+PR-26-00657,1,ITM-1049,f3a1cff9-REQ-0108,,SOURCING_REQUEST,RFQ,,,17217.90,S029;S030,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 2 suppliers.
+PR-26-00660,1,ITM-1011,f3a1cff9-REQ-0008,PO-0001,PO,SPOT_PO,S006,6.64,37914.40,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00661,1,ITM-1013,f3a1cff9-REQ-0011,PO-0005,PO,SPOT_PO,S007,37.74,37362.60,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S007 at reference price.
+PR-26-00662,2,ITM-1065,f3a1cff9-REQ-0150,PO-0072,PO,SPOT_PO,S042,10139.65,91256.85,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S042 at reference price.
+PR-26-00662,3,ITM-1062,f3a1cff9-REQ-0151,,SOURCING_REQUEST,RFQ,,,241186.93,S039;S040;S041,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00663,1,ITM-1073,f3a1cff9-REQ-0065,,SOURCING_REQUEST,CAPEX_SOURCING,,,1150000.00,S045;S047;S020;S048;S046,v5.1,Capex equipment procurement requires sourcing event and Capex approval. 5 suppliers suggested.
+PR-26-00663,2,ITM-1067,f3a1cff9-REQ-0066,,SOURCING_REQUEST,RFQ,,,203029.00,S044;S043;S042,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00663,3,ITM-1063,f3a1cff9-REQ-0067,PO-0038,PO,SPOT_PO,S039,19522.84,78091.36,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S039 at reference price.
+PR-26-00664,2,ITM-1070,f3a1cff9-REQ-0076,,SOURCING_REQUEST,CAPEX_SOURCING,,,744137.67,S020;S047;S048;S045;S046,v5.1,Capex equipment procurement requires sourcing event and Capex approval. 5 suppliers suggested.
+PR-26-00665,1,ITM-1064,f3a1cff9-REQ-0146,,SOURCING_REQUEST,RFQ,,,342679.06,S039;S038;S040,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00665,2,ITM-1055,f3a1cff9-REQ-0147,,SOURCING_REQUEST,RFQ,,,218500.00,S033;S032,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 2 suppliers.
+PR-26-00665,3,ITM-1069,f3a1cff9-REQ-0148,,SOURCING_REQUEST,CAPEX_SOURCING,,,4561600.84,S045;S047;S020;S048;S046,v5.1,Capex equipment procurement requires sourcing event and Capex approval. 5 suppliers suggested.
+PR-26-00666,2,ITM-1025,f3a1cff9-REQ-0114,,SOURCING_REQUEST,RFQ,,,171600.00,S014;S013;S015,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00666,3,ITM-1072,f3a1cff9-REQ-0115,,SOURCING_REQUEST,CAPEX_SOURCING,,,2738200.86,S045;S047;S020;S048;S046,v5.1,Capex equipment procurement requires sourcing event and Capex approval. 5 suppliers suggested.
+PR-26-00666,4,ITM-1011,f3a1cff9-REQ-0116,PO-0056,PO,SPOT_PO,S006,6.64,218323.20,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S006 at reference price.
+PR-26-00667,2,ITM-1001,f3a1cff9-REQ-0018,PO-0008,PO,CONTRACT_PO,S001,6340.39,253615.60,,v5.1,Contract RC-2025-011 with Bhosari Steel Traders valid with sufficient ceiling.
+PR-26-00667,3,ITM-1002,f3a1cff9-REQ-0019,PO-0008,PO,CONTRACT_PO,S001,9168.71,174205.49,,v5.1,Contract RC-2025-011 with Bhosari Steel Traders valid with sufficient ceiling.
+PR-26-00667,4,ITM-1065,f3a1cff9-REQ-0020,PO-0011,PO,SPOT_PO,S042,10139.65,182513.70,,v5.1,Spot PO within threshold with proven purchase history; awarded to 1st preferred supplier S042 at reference price.
+PR-26-00668,1,NEW,f3a1cff9-REQ-0050,,SOURCING_REQUEST,NEW_ITEM_SOURCING,,37400.00,149600.00,,v5.1,Uncataloged item not in item master; routes to sourcing without supplier suggestions.
+PR-26-00669,1,NEW,f3a1cff9-REQ-0069,,SOURCING_REQUEST,NEW_ITEM_SOURCING,,72700.00,145400.00,,v5.1,Uncataloged item not in item master; routes to sourcing without supplier suggestions.
+PR-26-00670,1,NEW,f3a1cff9-REQ-0058,,SOURCING_REQUEST,NEW_ITEM_SOURCING,,37000.00,37000.00,,v5.1,Uncataloged item not in item master; routes to sourcing without supplier suggestions.
+PR-26-00672,1,ITM-1042,f3a1cff9-REQ-0055,,SOURCING_REQUEST,RFQ,,,143961.60,S026;S028;S025,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00671,1,ITM-1042,f3a1cff9-REQ-0055,,SOURCING_REQUEST,RFQ,,,143961.60,S026;S028;S025,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00673,1,ITM-1042,f3a1cff9-REQ-0055,,SOURCING_REQUEST,RFQ,,,143961.60,S026;S028;S025,v5.1,Requisition value requires 3 quotations under Clause 5.5. Suggested 3 suppliers.
+PR-26-00674,1,ITM-1034,f3a1cff9-UNPROC-PR-26-00674-1,,NOT_PROCESSED,NOT_PROCESSED,,,0.00,,v5.1,Invalid quantity: 0.0. Requisition line rejected.
+PR-26-00675,1,ITM-1034,f3a1cff9-UNPROC-PR-26-00675-1,,NOT_PROCESSED,NOT_PROCESSED,,,0.00,,v5.1,Invalid plant: PUN2 not recognized in Corvo operating plants.
